@@ -1,2 +1,2 @@
 # KT-MinB
-Moiniblog developed in Php/MariaDB/Javascript
+Miniblog developed in Php/MariaDB/Javascript
