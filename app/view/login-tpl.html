@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    {HTMLHead}
+  </head>
+  <body>
+    {HTMLNavbar}  
+    <div class="">
+      <div class="row">
+        <div class="col-2"></div>
+        <div class="col-8">
+          <div id="article" class="container mt-5">
+            {titre-page-login}
+            <hr>
+            {message}
+            <div class="container">
+                <form action="" role="form" method="POST">
+                    <div class="mb-3">
+                      <label for="login-user" class="form-label">Login</label>
+                      <input type="text" class="form-control" id="login-user" name="login-user">                  
+                    </div>
+                    <div class="mb-3">
+                      <label for="passwd-user" class="form-label">Password</label>
+                      <input type="password" class="form-control" id="passwd-user" name="passwd-user">
+                    </div>  
+                    <input type="hidden" class="form-control" id="action" name="action" value="login">
+                    <button type="submit" class="btn btn-primary">Send</button>
+                  </form>      
+               </div> 
+          </div>
+        </div>
+        <div class="col-2"></div>
+      </div>
+    </div>    
+    {HTMLJS}
+  </body>
+</html>
