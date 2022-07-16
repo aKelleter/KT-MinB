@@ -17,7 +17,7 @@ $_SESSION['IDENTIFY'] = 0;
 $urlParsed = parse_url($_SERVER ['REQUEST_URI']);
 
 // Récupérer les clés path et query (si existantes) 
-$path = KTFindKey( $urlParsed, 'path' );
+$path = AKFindKey( $urlParsed, 'path' );
     
 // Traiter la route
 if (strpos($path, 'page') !== false)

@@ -7,6 +7,22 @@
 // CONTROLER SECTION
 $msg = null;
 
+if(!empty($_POST)){
+    
+    if(empty($_FILES)) $_FILES = null;
+        
+    //DEBUG// AKPrintR($_POST); AKPrintR($_FILES); die();
+    
+    $rt = addArticle($_POST);
+   
+    // Si tout est OK
+    if($rt['status'])
+         $msg = KTMakeDiv('SUCCESS', 'alert alert-success el_top20 text-center wBold', $result['msg'], 'success' );
+    else
+         $msg = KTMakeDiv('ALERT', 'alert alert-danger el_top20 text-center wBold', $result['msg'], 'alert' ); 
+        
+}
+
 // --------------------------------------------------------------------------------------------
 // TEMPLATE SECTION
 
