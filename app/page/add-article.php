@@ -7,19 +7,19 @@
 // CONTROLER SECTION
 $msg = null;
 
-if(!empty($_POST)){
+if(isset($_POST['form_name']) && $_POST['form_name'] == 'add-article'){
     
     if(empty($_FILES)) $_FILES = null;
         
     //DEBUG// AKPrintR($_POST); AKPrintR($_FILES); die();
     
-    $rt = addArticle($_POST);
+    $rt = addArticle($_POST, $_FILES);
    
     // Si tout est OK
     if($rt['status'])
-         $msg = KTMakeDiv('SUCCESS', 'alert alert-success el_top20 text-center wBold', $result['msg'], 'success' );
+         $msg = AKMakeDiv('SUCCESS', 'alert alert-success text-center', $rt['msg'], 'success' );
     else
-         $msg = KTMakeDiv('ALERT', 'alert alert-danger el_top20 text-center wBold', $result['msg'], 'alert' ); 
+         $msg = AKMakeDiv('ALERT', 'alert alert-danger text-center', $rt['msg'], 'alert' ); 
         
 }
 
@@ -30,7 +30,10 @@ if(!empty($_POST)){
 // Instanciation du moteur de template
 $page = 'P-ADD-ARTICLE';
 $engine = new Template(ABSPATH . D_APP . DS . D_VIEW . DS);
-$engine->set_file($page, 'add-article-tpl.html');
+if($_SESSION['IDENTIFY'] == 1)
+    $engine->set_file($page, 'add-article-tpl.html');
+else
+    $engine->set_file($page, 'noaccess-tpl.html');
 
 // --------------------------------------------------------------------------------------------
 // Var Initialization

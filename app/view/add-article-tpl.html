@@ -17,27 +17,28 @@
                 <form action="" method="post" enctype="multipart/form-data">
                   <div class="mb-3">
                     <label for="title-article" class="form-label">Title</label>
-                    <input type="text" class="form-control" id="title-article" name="title-article">                    
+                    <input type="text" class="form-control" id="title_article" name="title_article">                    
                   </div>
                   <div class="mb-3">
                       <label for="minithumb-article" class="form-label">Icon</label>
-                      <select class="form-select" id="minithumb-article" name="minithumb-article">                        
+                      <select class="form-select" id="minithumb_article" name="minithumb_article">                        
                         <option value="mt-start.png">Start</option>                        
                       </select>
                   </div>    
                   <div class="mb-3">
                     <label for="teaser-article" class="form-label">Teaser</label>
-                    <textarea class="form-control" id="teaser-article" name="teaser-article"></textarea>
+                    <textarea class="form-control" id="teaser_article" name="teaser_article"></textarea>
                   </div>
                   <div class="mb-3">
                     <label for="content-article" class="form-label">Article</label>
-                    <textarea class="form-control" id="content-article" name="content-article"rows="5"></textarea>
+                    <textarea class="form-control" id="content_article" name="content_article" rows="5"></textarea>
                   </div>
                   <div class="mb-3">
                     <label for="file-article" class="form-label">Joint file</label>
-                    <input class="form-control" type="file" id="file-article" name="file-article">
+                    <input class="form-control" type="file" id="file_article" name="file_article">
                   </div>
-                  <button type="submit" class="btn btn-primary">Add</button>
+                  <input type="hidden" id="form_name" name="form_name" value="add-article">  
+                  <button type="submit" class="btn btn-primary mb-5">Add</button>
                 </form>
             </div> 
           </div>
