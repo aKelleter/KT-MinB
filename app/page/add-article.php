@@ -20,6 +20,9 @@ if(isset($_POST['form_name']) && $_POST['form_name'] == 'add-article'){
          $msg = AKMakeDiv('SUCCESS', 'alert alert-success text-center', $rt['msg'], 'success' );
     else
          $msg = AKMakeDiv('ALERT', 'alert alert-danger text-center', $rt['msg'], 'alert' ); 
+    
+    $redirection_url = GENRouteLink('index.php', $_SESSION['route']);
+    header("refresh:2; $redirection_url" );
         
 }
 
