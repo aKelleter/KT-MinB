@@ -11,7 +11,8 @@ if(isset($_POST['form_name']) && $_POST['form_name'] == 'add-article'){
     
     if(empty($_FILES)) $_FILES = null;
         
-    //DEBUG// AKPrintR($_POST); AKPrintR($_FILES); die();
+    //DEBUG// 
+    AKPrintR($_POST); AKPrintR($_FILES); die();
     
     $rt = addArticle($_POST, $_FILES);
    
@@ -40,7 +41,7 @@ else
 
 // --------------------------------------------------------------------------------------------
 // Var Initialization
-$engine->set_var('page-title', 'Alain Kelleter - Add Article');
+$pageTitle = 'Alain Kelleter - Add Article';
 $engine->set_var('titre-page-add-article', 'Add an article');
 $engine->set_var('message', $msg);
 

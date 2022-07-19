@@ -1,0 +1,13 @@
+
+#more-upload-link{
+    display:none;    
+}
+.site-logo{
+    background: #cccccc;
+    padding: 2px;
+    border: 1px solid #ffcc00;
+    border-radius: 3px;
+}
+.notUnderline{
+    text-decoration: none;
+}

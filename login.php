@@ -71,7 +71,7 @@ $engine->set_file($page, 'login-tpl.html');
 
 // --------------------------------------------------------------------------------------------
 // Var Initialization
-$engine->set_var('page-title', 'Alain Kelleter - Who is here');
+$pageTitle = 'Alain Kelleter - Who is here / Sign in';
 $engine->set_var('titre-page-login', 'Who is here ?');
 $engine->set_var('message', $msg);
 
