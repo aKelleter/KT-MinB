@@ -329,7 +329,6 @@ function addFile($filename, $content_id)
     if($rt == true)
         return true;
     else
-        return false;    
-    
+        return false;      
 }
 
