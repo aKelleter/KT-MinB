@@ -195,6 +195,112 @@ function addArticle($datas)
     return $rt;
 }
 
+function addArticleMulti($datas)
+{
+    $rt = array("status" => false, "msg" => "");
+    $jointFile = $rtAF = $rtUP = $noJointFile  = array();
+        
+    extract($datas);
+    
+    if(empty($title_article) || empty($teaser_article) || empty($content_article))
+    {
+        $rt['status'] = false;
+        $rt['msg'] = "The title, teaser and article are mandatory";
+    }else
+        $rt['status'] = true;
+        
+    
+    if($rt['status'])
+    {
+        //DEBUG// AKPrintR($_FILES); die();
+        
+        // Upload le ou les fichiers joints
+        foreach($_FILES as $key => $file)
+        {
+            if(!empty($_FILES[$key]['name']))
+            {
+                $noJointFile[$key] = true;
+                $index = $key;
+                $extensions = unserialize(ALLOWEXT);
+                $nameFile = AKSlugify($_FILES[$key]['name']).'-'.GENrands(5);
+                $rtUP[$key] = AKUploadFile($index, $nameFile, PATHFILE, MAXSIZE, $extensions);
+
+                if($rtUP[$key]){                
+                    $jointFile[$key] = $nameFile;
+                }elseif ($rtUP[$key] == false){
+                    $jointFile[$key] = false;                
+                }
+            }else
+                $jointFile[$key] = null;
+        }       
+        
+        // Ajoute l'article en DB
+        $con = new Model('content');
+        $article = $con->db->prepare("
+            INSERT
+            INTO ".$con->credentials['prefix'].$con->table." (
+            title,
+            date,
+            teaser,
+            minithumb,
+            article,
+            slug                    
+            ) 
+            VALUES(
+            :title,
+            :date,
+            :teaser,
+            :minithumb,
+            :article,
+            :slug
+            )
+        ");
+
+        $rt['status'] = $article->execute([
+            "title" => htmlentities($title_article),
+            "date"  => date ('Y-m-d'),
+            "teaser" => htmlentities(AKFiltre($teaser_article)),
+            "minithumb" => $minithumb_article,
+            "article" => htmlentities(AKFiltre($content_article)),
+            "slug" => AKSlugify($title_article),
+        ]);
+
+        // Si l'insert de l'article s'est bien déroulé
+        if($rt['status'])
+        {
+            $rt['msg'] = 'Your new article has been created';   
+            
+            // Capture de l'ID du nouvel article
+            $sql = "SELECT LAST_INSERT_ID() as lastid FROM content";
+            $req = $con->db->query($sql);
+            $id = $req->fetch(PDO::FETCH_ASSOC);
+            
+            // Ajoute le ou les fichiers joints en DB
+            foreach($jointFile as $key => $filename)
+            {
+                if(isset($filename) && !empty($filename))
+                    $rtAF[$key] = addFile($filename, $id['lastid']);
+                else
+                    $rtAF[$key] = $filename;    
+            }
+                        
+            if(AKAllIsTrue($rtAF))
+            {
+                $rt['msg'] = 'Your article has been created and the attachment could be uploaded to the server';                
+            }elseif(AKAllIsNull($rtAF)){
+                $rt['msg'] = 'Your article has been created';
+            }elseif(AKAllIsOneIsFalse($rtAF)){
+                $rt['msg'] = 'Your article has been created but one or all the attachment could not be uploaded to the server';
+            }
+        }else
+            $rt['msg'] = 'The system encountered a problem when creating the article';
+
+        $article->closeCursor();        
+    }
+    
+    return $rt;
+}
+
 function addFile($filename, $content_id)
 {
     $rt = false;

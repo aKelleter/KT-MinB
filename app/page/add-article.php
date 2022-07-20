@@ -11,10 +11,9 @@ if(isset($_POST['form_name']) && $_POST['form_name'] == 'add-article'){
     
     if(empty($_FILES)) $_FILES = null;
         
-    //DEBUG// 
-    AKPrintR($_POST); AKPrintR($_FILES); die();
-    
-    $rt = addArticle($_POST, $_FILES);
+    //DEBUG//  AKPrintR($_POST);  AKPrintR($_FILES);  die();
+        
+    $rt = addArticleMulti($_POST, $_FILES);
    
     // Si tout est OK
     if($rt['status'])
