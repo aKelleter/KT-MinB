@@ -35,7 +35,7 @@ function deleteAttachment(eleId) {
 }
 
 tinymce.init({
-      selector: 'textarea',
+      selector: 'textarea.editor',
       plugins: 'advlist autolink lists link image charmap preview anchor pagebreak',
       toolbar_mode: 'floating',
 });

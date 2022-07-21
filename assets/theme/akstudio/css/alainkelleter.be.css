@@ -1,13 +1,84 @@
 
+:root { 
+    --color-main: #F6F9FC;    
+    --font-main: #47474b;
+    --color-input-group: #f1f7fc;
+    --color-backg-article : #FFFFFF;
+    --color-backg-logo: #dde7f0;
+    --color-border-high: #ffcc00;
+    --color-border-low: #C0C0C0;
+    --sig-error : #e74093;
+
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Barlow:wght@200&display=swap');
+
+body{
+    font-family: 'Barlow', sans-serif !important;
+    background: var(--color-main) !important;
+    color: var(--font-main);
+}
+
 #more-upload-link{
     display:none;    
 }
 .site-logo{
-    background: #cccccc;
+    background: var(--color-backg-logo);
     padding: 2px;
-    border: 1px solid #ffcc00;
+    border: 1px solid var(--color-border-high);
     border-radius: 3px;
 }
 .notUnderline{
     text-decoration: none;
+}
+
+.form-group {
+    border-radius: 5px;
+    background-color: var(--color-input-group);
+    padding: 5px;
+    margin: 9px 0;
+    border: 1px solid var(--color-border-low);
+    box-shadow: 0 6px 12px -2px rgb(50 50 93 / 25%), 0 3px 7px -3px rgb(0 0 0 / 30%);
+}
+
+.sig-error {
+    color: var(--sig-error);
+}
+
+.files-container { 
+    border: 1px solid #D0D0D0; 
+    padding: 7px; 
+}
+
+.files-infos {
+    line-height: 1.5;
+    padding: 5px 10px; 
+    background-color: var(--color-backg-logo);
+    border: 1px solid #cccccc;
+    color: #333;
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+    border-radius: 3px;
+    font-size: 12px;
+    line-height: 1.5;
+    padding: 5px 10px;
+}
+
+.article{    
+    padding: 5px 10px; 
+    background-color: var(--color-backg-article);
+    border: 1px solid #cccccc;    
+    border-radius: 4px;     
+    padding: 20px;
+    box-shadow: 0 6px 12px -2px rgb(50 50 93 / 25%), 0 3px 7px -3px rgb(0 0 0 / 30%);
+}
+
+.btn-down:hover {
+    background-color: var(--color-backg-logo);
+    color: var(--font-main);; 
+}
+.kt-box-shadow{
+    box-shadow: 0 6px 12px -2px rgb(50 50 93 / 25%), 0 3px 7px -3px rgb(0 0 0 / 30%); 
 }

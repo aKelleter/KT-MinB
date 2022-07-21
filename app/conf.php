@@ -1,10 +1,12 @@
 <?php
 
 if(!defined('K_DEBUG')) define('K_DEBUG', true);
-if(!defined('VERSION')) define('VERSION', 'v0.2.3 - 20/07/2022 17:59');
+if(!defined('VERSION')) define('VERSION', 'v0.2.3 - 21/07/2022 22:30');
 if(!defined('FOOTER')) define('FOOTER', 'alainkelleter.be - '.VERSION);
 if(!defined('THEME')) define('THEME', 'akstudio');
 if(!defined('PATH_ICON')) define('PATH_ICON', 'pub' . DS . 'icons' . DS);
+if(!defined('PATH_FILE')) define('PATH_FILE', 'pub' . DS . 'files' . DS);
+if(!defined('PATH_IMG')) define('PATH_IMG', 'pub' . DS . 'img' . DS);
 if(!defined('LOGO')) define('LOGO', 'assets' . DS . 'theme' . DS . 'akstudio' . DS . 'img' . DS . 'logo-ak.png');
 if(!defined('FAVICON')) define('FAVICON', 'assets' . DS . 'theme' . DS . 'akstudio' . DS . 'img' . DS . 'icon-ak.png');
 

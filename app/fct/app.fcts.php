@@ -66,7 +66,7 @@ function AKChangePassword($userid, $passwd)
     }    
        
     if ($status['request']) 
-        $status['msg'] = T_('Mot de passe modifié avec succès');   
+        $status['msg'] = 'Mot de passe modifié avec succès';   
         
     return $status;
 }
@@ -197,18 +197,16 @@ function AKUserExist($user)
 function AKIdentUser($user, $passwd)
 {
     
-    $options = ['cost' => 10 ];
-    
-    $con = new Model('users');
+     $con = new Model('users');
 
     $sql =  $con->db->prepare('SELECT * FROM ' . $con->table . ' WHERE login = :login');        
     $req = $sql->execute(array("login" => $user));
     
-    $datas = $sql->fetch(PDO::FETCH_ASSOC);    
+    $db = $sql->fetch(PDO::FETCH_ASSOC);    
    
     //DEBUG//var_dump( $datas['passwd']); die();
     
-    $samePasswords = password_verify($passwd,  $datas['passwd']);   
+    $samePasswords = password_verify($passwd,  $db['passwd']);   
 
     // Si correspondance
     if ($samePasswords == true)
@@ -216,16 +214,16 @@ function AKIdentUser($user, $passwd)
         //DEBUG//echo 'identfication correcte '; die();
         
         // Si l'utilisateur est actif
-        if ($datas['status']) 
+        if ($db['status']) 
         {
             $st['stat'] = true;
             $st['msg'] = 'You are identified';
             
-            $st['login'] = $datas['login'];
-            $st['firstname'] = $datas['firstname'];
-            $st['lastname'] = $datas['lastname'];
-            $st['email'] = $datas['email'];        
-            $st['user_id'] = $datas['id'];
+            $st['login'] = $db['login'];
+            $st['firstname'] = $db['firstname'];
+            $st['lastname'] = $db['lastname'];
+            $st['email'] = $db['email'];        
+            $st['user_id'] = $db['id'];
             
         }else{
             $st['stat'] = false;

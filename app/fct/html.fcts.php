@@ -104,6 +104,7 @@ function HTMLNews($array)
 
     foreach($array as $ligne)
     {
+        $cpt = 1;
         foreach($ligne as $col => $val)
         {
             if($col == 'id') $id = $val;        
@@ -114,13 +115,14 @@ function HTMLNews($array)
         }
         $html .='  
             <tr>                
-                <td>'.$id.'</td>
-                <td>'.HTMLMiniThumb($minithumb,$_SESSION['route']).'</td>
+                <td>'.$cpt.'</td>
+                <td><a href="'.PATH_PAGE.'article.php?id='.$id.'">'.HTMLMiniThumb($minithumb,$_SESSION['route']).'</a></td>
                 <td>'.$date.'</td>
-                <td>'.$titre.'</td>
-                <td><a href="'.PATH_PAGE.'article.php?id='.$id.'">'.$teaser.'</a></td>
+                <td><a href="'.PATH_PAGE.'article.php?id='.$id.'">'.$titre.'</a></td>
+                <td>'. html_entity_decode($teaser).'</td>
             </tr>
-        ';       
+        ';  
+        $cpt++;
     }
 
     $html .= '</tbody>
@@ -167,7 +169,7 @@ function HTMLArticle($article)
     $html = '
         <div id="art-minithumb">
             '.HTMLMiniThumb($article['minithumb'], $_SESSION['route'], $classminithumb).'        
-            '.$article['article'].'
+            '.html_entity_decode($article['article']).'
         </div>
     ';
 
@@ -205,23 +207,25 @@ function HTMLMenuUser()
     $html = '';
 
     if(isset($_SESSION['IDENTIFY']) && $_SESSION['IDENTIFY'] == 0 )
-        $html = '<li><a href="{url-signin}">Hello You</a></li>';
+        $html = '<ul class="navbar-nav d-flex"><li class=""><a href="{url-signin}">Hello You</a></li></ul>';
     else{
         if(!isset($_SESSION['firstname'])) $_SESSION['firstname']  = 'John Doe';
         
-        $html .= '
-            
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="fa fa-user"></i> <span class="">'.$_SESSION['firstname'].'</span> <span class="caret">
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" href="{url-add-article}">Add</a></li>
-            <li><a class="dropdown-item" href="#">Manage</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="{url-signout}">Sign out</a></li>
-          </ul>
-        </li>';        
+        $html .= ' 
+        <ul class="navbar-nav d-flex me-5">
+            <li class="nav-item dropdown me-3">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fa fa-user"></i> '.$_SESSION['firstname'].'
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><a class="dropdown-item" href="{url-add-article}">Add</a></li>
+                <li><a class="dropdown-item" href="#">Manage</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="{url-signout}">Sign out</a></li>
+              </ul>
+            </li>
+        </ul>
+        ';        
     }
 
     return $html;
@@ -273,4 +277,55 @@ function AKMakeDiv( $type, $classes, $message, $role = null, $id = null, $innerS
 
 
     return $div;
+}
+
+function HTMLArticleFiles($jointFiles)
+{
+    //DEBUG// AKPrintR($jointFiles);
+    $html = '';
+    $html .= '<h3 class="titre-fichier-joint mt-5">{trm-fichier-joint}</h3>';
+    $html .= '<hr>';
+    foreach($jointFiles as $file)
+    {
+            $html .= '<div class="row">'; 
+            $html .= '<div class="col-md-12">'; 
+            $html .= HTMLFileRow($file["filename"]);   
+            $html .= '</div>';
+            $html .= '</div>';
+    }    
+    return $html;
+}
+
+/**
+* Retourne le code HTML qui affiche le fichier joint à télécharger sous
+* la forme d'une ligne
+* 
+* @param string $filename
+* @param string $pathfile
+* @param string $link
+*/
+function HTMLFileRow($filename){
+
+    $size = @filesize(ABSPATH . PATH_FILE . $filename);
+    $sizeConverted = fileSizeConvert($size);
+    if($sizeConverted == false)
+        $sizeConverted = '<span class="sig-error">{trm-erreur-filesize}</span>';
+
+    $html = '
+    <div class="files-container">
+        <div class="row">
+            <div class="col-md-4">
+                <span class="files-infos col-xs-12 col-sm-12 text-left">'.$filename.'</span> 
+            </div>
+            <div class="col-md-4">
+                <span class="files-infos col-xs-12 col-sm-12">{trm-taille}: '.$sizeConverted.'</span>
+            </div>
+            <div class="col-md-4">
+                <a href="'.GENRouteLink(PATH_FILE . $filename, $_SESSION['route']).'" class="btn btn-default btn-down btn-sm col-xs-12 col-sm-12">{trm-telecharger}</a>
+            </div>
+        </div>
+    </div>
+    '; 
+
+    return $html;  
 }

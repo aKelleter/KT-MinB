@@ -79,7 +79,7 @@ function loadArticle($id)
     $con = new Model('content');
     $sql = 'SELECT * FROM ' . $con->credentials['prefix'] . $con->table . ' WHERE id='.$id;
 
-    if ($con)
+    if($con)
     {
         $req = $con->db->query($sql);
         return $req->fetch(PDO::FETCH_ASSOC);
@@ -87,6 +87,31 @@ function loadArticle($id)
         return false;
 }
 
+/**
+ * Retourne le ou les fichiers joints associés à l'article passé en paramètre
+ * 
+ * @param type $id
+ * @return boolean
+ */
+function loadJointFiles($id)
+{
+    $con = new Model('files');
+    $sql = 'SELECT * FROM ' . $con->credentials['prefix'] . $con->table . ' WHERE content_id='.$id;
+
+    if($con)
+    {
+        $req = $con->db->query($sql);
+        return $req->fetchall(PDO::FETCH_ASSOC);
+    }else
+        return false;
+}
+
+/**
+ * Ajoute un article avec un seul fichier joint
+ * 
+ * @param type $datas
+ * @return string
+ */
 function addArticle($datas)
 {
     $rt = array("status" => false, "msg" => "");
@@ -195,6 +220,12 @@ function addArticle($datas)
     return $rt;
 }
 
+/**
+ * Ajoute un article avec un ou plusieurs fichiers joints
+ * 
+ * @param type $datas
+ * @return string
+ */
 function addArticleMulti($datas)
 {
     $rt = array("status" => false, "msg" => "");
@@ -257,11 +288,11 @@ function addArticleMulti($datas)
         ");
 
         $rt['status'] = $article->execute([
-            "title" => htmlentities($title_article),
+            "title" => AKFiltre($title_article),
             "date"  => date ('Y-m-d'),
-            "teaser" => htmlentities(AKFiltre($teaser_article)),
+            "teaser" => nl2br(htmlentities($teaser_article)),
             "minithumb" => $minithumb_article,
-            "article" => htmlentities(AKFiltre($content_article)),
+            "article" => nl2br(htmlentities($content_article)),
             "slug" => AKSlugify($title_article),
         ]);
 
