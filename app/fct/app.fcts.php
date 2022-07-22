@@ -271,7 +271,7 @@ function GENRouteLink($link, $route = null)
 * 
 * @return boolean
 */
-function AKUploadFile( $index, $name, $destination, $maxsize = false, $extensions = false ) {
+function AKUploadFile( $index, $nameFile, $destination, $maxsize = false, $extensions = false ) {
 
     // Test si le fichier est correctement uploadé
     if (!isset($_FILES[$index]) OR $_FILES[$index]['error'] > 0) return false;
@@ -284,10 +284,10 @@ function AKUploadFile( $index, $name, $destination, $maxsize = false, $extension
     if ($extensions !== false AND !in_array($ext, $extensions)) return false;
 
     // Téléversement
-    if(move_uploaded_file($_FILES[$index]['tmp_name'], ABSPATH.$destination.$name))
+    if(move_uploaded_file($_FILES[$index]['tmp_name'], ABSPATH.$destination.$nameFile))
         return true;
     else
-        return true;
+        return false;
 
 }  
 
@@ -346,7 +346,7 @@ function AKarrayInline($array)
 * Supprime les balises html et php
 * et les espaces de début et de fin de chaîne
 *
-* @param   string $str.
+* @param   string $str
 * @return  string filtered
 */
 function AKFiltre($str) 
@@ -587,4 +587,19 @@ function AKAllIsOneIsFalse($array)
         return true;
     else 
         return false;
+}
+
+/**
+ * Supprime l'extension du nom de fichier passé en paramètre
+ * 
+ * @param string $fileName
+ * @return string
+ */
+function AKDeleteFileExtension($fileName)
+{ 
+  // Position du '.'  
+  $pos = strpos($fileName, '.');
+
+  // Supprime l'extention
+  return substr($fileName, 0, $pos);
 }

@@ -50,18 +50,22 @@ function loadAllArticles()
         $req = $con->db->query($sql);
 
         $list = array();
-        $i = 0;
-
-        foreach ($req as $data) {
+        $datas = $req->fetchall();
+        $pos = sizeof($datas);
+        $i = 0;          
+        foreach ($datas as $data)
+        {
             $list [$i] = array(
                 'id' => $data ['id'],
                 'title' => $data ['title'],
                 'date' => $data ['date'],
                 'teaser' => $data ['teaser'],
                 'article' => $data ['article'],
-                'minithumb' => $data ['minithumb']
+                'minithumb' => $data ['minithumb'],
+                'position' => $pos
             );
-            $i ++;
+            $pos --;
+            $i++;
         }
         return $list;
 
@@ -243,18 +247,20 @@ function addArticleMulti($datas)
     
     if($rt['status'])
     {
-        //DEBUG// AKPrintR($_FILES); die();
+        //DEBUG// AKPrintR($_FILES, 'FILES'); die();
         
         // Upload le ou les fichiers joints
         foreach($_FILES as $key => $file)
         {
-            if(!empty($_FILES[$key]['name']))
+            if(!empty($file['name']))
             {
                 $noJointFile[$key] = true;
                 $index = $key;
-                $extensions = unserialize(ALLOWEXT);
-                $nameFile = AKSlugify($_FILES[$key]['name']).'-'.GENrands(5);
-                $rtUP[$key] = AKUploadFile($index, $nameFile, PATHFILE, MAXSIZE, $extensions);
+                $extensionsAuthorized = unserialize(ALLOWEXT);
+                $ext = substr(strrchr($_FILES[$index]['name'],'.'),1);
+                $nameFileWithoutExt = AKSlugify(AKDeleteFileExtension($_FILES[$key]['name']));
+                $nameFile = $nameFileWithoutExt.'-'.GENrands(5).'.'.$ext;
+                $rtUP[$key] = AKUploadFile($index, $nameFile, PATHFILE, MAXSIZE, $extensionsAuthorized);
 
                 if($rtUP[$key]){                
                     $jointFile[$key] = $nameFile;
@@ -295,7 +301,7 @@ function addArticleMulti($datas)
             "article" => nl2br(htmlentities($content_article)),
             "slug" => AKSlugify($title_article),
         ]);
-
+       
         // Si l'insert de l'article s'est bien déroulé
         if($rt['status'])
         {

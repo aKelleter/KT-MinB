@@ -34,8 +34,17 @@ function deleteAttachment(eleId) {
     }
 }
 
-tinymce.init({
+
+
+$(document).ready(function() {
+    
+      
+    tinymce.init({
       selector: 'textarea.editor',
       plugins: 'advlist autolink lists link image charmap preview anchor pagebreak',
       toolbar_mode: 'floating',
+    });
+    
+    const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
+    const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl));
 });

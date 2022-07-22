@@ -21,13 +21,17 @@ function HTMLHead($route, $pageTitle = null, $favicon = null)
     <!-- Bootstrap CSS -->
     <link href="'.GENRouteLink('vendors/bootstrap5/css/bootstrap.min.css', $route).'" rel="stylesheet">
     <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+    <!--<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />-->
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
     <!-- MDB -->
-    <!--<link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.2.0/mdb.min.css" rel="stylesheet" />-->
+    <!--<link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.2.0/mdb.min.css" rel="stylesheet" />-->    
+    <!-- Material Design Icon CSS -->
+    <!--<link href="'.GENRouteLink('assets/theme/akstudio/css/mdi.css', $route).'" rel="stylesheet" />-->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@mdi/font@6.9.96/css/materialdesignicons.min.css">
     <!-- AlainKelleter CSS -->
-    <link href="'.GENRouteLink('assets/theme/akstudio/css/alainkelleter.be.css', $route).'" rel="stylesheet" />
+    <link href="'.GENRouteLink('assets/theme/akstudio/css/alainkelleter.be.css', $route).'" rel="stylesheet" />  
+        
     <!-- AlainKelleter Favicon -->    
     <link rel="icon" type="image/x-icon" href="'.GENRouteLink($favicon, $route).'">    
     <title>'.$pageTitle.'</title>    
@@ -76,7 +80,7 @@ function HTMLJS($route)
  * @param array $array
  * @return string
  */
-function HTMLNews($array)
+function HTMLListArticles($array)
 {
     $id = null;
     $date = null;
@@ -112,10 +116,11 @@ function HTMLNews($array)
             if($col == 'title') $titre = $val;        
             if($col == 'teaser') $teaser = $val;        
             if($col == 'minithumb') $minithumb = $val;        
+            if($col == 'position') $position = $val;        
         }
         $html .='  
-            <tr>                
-                <td>'.$cpt.'</td>
+            <tr class="kt-box-shadow m-3 p-3">                
+                <td>'.$position.'</td>
                 <td><a href="'.PATH_PAGE.'article.php?id='.$id.'">'.HTMLMiniThumb($minithumb,$_SESSION['route']).'</a></td>
                 <td>'.$date.'</td>
                 <td><a href="'.PATH_PAGE.'article.php?id='.$id.'">'.$titre.'</a></td>
@@ -215,7 +220,7 @@ function HTMLMenuUser()
         <ul class="navbar-nav d-flex me-5">
             <li class="nav-item dropdown me-3">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="fa fa-user"></i> '.$_SESSION['firstname'].'
+                <i class="mdi mdi-account" aria-hidden="true"></i> '.$_SESSION['firstname'].'
               </a>
               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <li><a class="dropdown-item" href="{url-add-article}">Add</a></li>
@@ -312,15 +317,15 @@ function HTMLFileRow($filename){
         $sizeConverted = '<span class="sig-error">{trm-erreur-filesize}</span>';
 
     $html = '
-    <div class="files-container">
+    <div class="files-container m-1">
         <div class="row">
-            <div class="col-md-4">
-                <span class="files-infos col-xs-12 col-sm-12 text-left">'.$filename.'</span> 
+            <div class="col-md-2">
+                <button type="button" class="btn btn-secondary col-xs-12 col-sm-12 files-infos" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-title="Filename" data-bs-content="'.$filename.'">Filename <i class="mdi mdi-file-outline"></i></button> 
             </div>
-            <div class="col-md-4">
+            <div class="col-md-5">
                 <span class="files-infos col-xs-12 col-sm-12">{trm-taille}: '.$sizeConverted.'</span>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-5">
                 <a href="'.GENRouteLink(PATH_FILE . $filename, $_SESSION['route']).'" class="btn btn-default btn-down btn-sm col-xs-12 col-sm-12">{trm-telecharger}</a>
             </div>
         </div>

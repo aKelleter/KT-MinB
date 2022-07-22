@@ -14,7 +14,7 @@ if(isset($_POST['form_name']) && $_POST['form_name'] == 'add-article')
         
     //DEBUG//  AKPrintR($_POST);  AKPrintR($_FILES);  die();
         
-    $rt = addArticleMulti($_POST, $_FILES);
+    $rt = addArticleMulti($_POST);
    
     // Préparation de la redirection
     $redirection_url = GENRouteLink('index.php', $_SESSION['route']);
