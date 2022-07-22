@@ -7,6 +7,7 @@
     --color-backg-logo: #dde7f0;
     --color-border-high: #ffcc00;
     --color-border-low: #C0C0C0;
+    --color-border-verylow: #d2d4e0;
     --sig-error : #e74093;
 
 }
@@ -39,6 +40,19 @@ body{
     margin: 9px 0;
     border: 1px solid var(--color-border-low);
     box-shadow: 0 6px 12px -2px rgb(50 50 93 / 25%), 0 3px 7px -3px rgb(0 0 0 / 30%);
+}
+
+.div-article {
+    border-radius: 5px;
+    background-color: var(--color-input-group);
+    padding: 5px;
+    margin: 9px 0;
+    border: 1px solid var(--color-border-verylow);
+    /*box-shadow: 0 6px 12px -2px rgb(50 50 93 / 25%), 0 3px 7px -3px rgb(0 0 0 / 30%);*/
+}
+
+.div-article:hover{
+    background-color: var(--color-backg-logo);
 }
 
 .sig-error {

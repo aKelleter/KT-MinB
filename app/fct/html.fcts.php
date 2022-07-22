@@ -80,7 +80,7 @@ function HTMLJS($route)
  * @param array $array
  * @return string
  */
-function HTMLListArticles($array)
+function HTMLListArticlesLikeArray($array)
 {
     $id = null;
     $date = null;
@@ -88,6 +88,7 @@ function HTMLListArticles($array)
     $teaser = null;
     $contenu = null;
     $minithumb = null;
+    $position = null;
 
     $html = '
     <div class="table-responsive">    
@@ -108,7 +109,6 @@ function HTMLListArticles($array)
 
     foreach($array as $ligne)
     {
-        $cpt = 1;
         foreach($ligne as $col => $val)
         {
             if($col == 'id') $id = $val;        
@@ -119,15 +119,14 @@ function HTMLListArticles($array)
             if($col == 'position') $position = $val;        
         }
         $html .='  
-            <tr class="kt-box-shadow m-3 p-3">                
+            <tr class="m-3 p-3">                
                 <td>'.$position.'</td>
-                <td><a href="'.PATH_PAGE.'article.php?id='.$id.'">'.HTMLMiniThumb($minithumb,$_SESSION['route']).'</a></td>
+                <td><a class="notUnderline" href="'.PATH_PAGE.'article.php?id='.$id.'">'.HTMLMiniThumb($minithumb,$_SESSION['route']).'</a></td>
                 <td>'.$date.'</td>
-                <td><a href="'.PATH_PAGE.'article.php?id='.$id.'">'.$titre.'</a></td>
+                <td><a class="notUnderline" href="'.PATH_PAGE.'article.php?id='.$id.'">'.$titre.'</a></td>
                 <td>'. html_entity_decode($teaser).'</td>
             </tr>
-        ';  
-        $cpt++;
+        ';          
     }
 
     $html .= '</tbody>
@@ -136,6 +135,46 @@ function HTMLListArticles($array)
    
     return $html;
 
+}
+
+function HTMLListArticlesLikeDiv($array)
+{
+    $id = null;
+    $date = null;
+    $titre = null;
+    $teaser = null;
+    $contenu = null;
+    $minithumb = null;
+    $position = null;
+    
+    $html = '';
+    
+    foreach($array as $ligne)
+    {
+      
+        foreach($ligne as $col => $val)
+        {
+            if($col == 'id') $id = $val;        
+            if($col == 'date') $date = convertDateEnToFr($val);        
+            if($col == 'title') $titre = $val;        
+            if($col == 'teaser') $teaser = $val;        
+            if($col == 'minithumb') $minithumb = $val;        
+            if($col == 'position') $position = $val;        
+        }
+        $html .='              
+            <div class="container kt-box-shadow m-2 p-1">                 
+                <div class="row div-article">                
+                    <div class="col-md-1">'.$position.'</div>
+                    <div class="col-md-2"><a class="notUnderline" href="'.PATH_PAGE.'article.php?id='.$id.'">'.HTMLMiniThumb($minithumb,$_SESSION['route']).'</a></div>
+                    <div class="col-md-2">'.$date.'</div>
+                    <div class="col-md-2"><a class="notUnderline" href="'.PATH_PAGE.'article.php?id='.$id.'">'.$titre.'</a></div>
+                    <div class="col-md-5">'. html_entity_decode($teaser).'</div>
+                </div>               
+            </div>            
+        ';          
+    }
+    
+    return $html;
 }
 
 /**

@@ -1,7 +1,7 @@
 <?php
 
 if(!defined('K_DEBUG')) define('K_DEBUG', true);
-if(!defined('VERSION')) define('VERSION', 'v0.2.4 - 22/07/2022 22:17');
+if(!defined('VERSION')) define('VERSION', 'v0.3.0 - 22/07/2022 22:39');
 if(!defined('FOOTER')) define('FOOTER', 'alainkelleter.be - '.VERSION);
 if(!defined('THEME')) define('THEME', 'akstudio');
 if(!defined('PATH_ICON')) define('PATH_ICON', 'pub' . DS . 'icons' . DS);
