@@ -137,7 +137,7 @@ function HTMLListArticlesLikeArray($array)
 
 }
 
-function HTMLListArticlesLikeDiv($array)
+function HTMLListArticlesWithDiv($array)
 {
     $id = null;
     $date = null;
