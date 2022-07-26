@@ -5,7 +5,7 @@
     --color-input-group: #f1f7fc;
     --color-backg-article : #FFFFFF;
     --color-backg-logo: #dde7f0;
-    --color-border-high: #ffcc00;
+    --color-border-logo: #1d202b;
     --color-border-low: #C0C0C0;
     --color-border-verylow: #d2d4e0;
     --sig-error : #e74093;
@@ -25,10 +25,16 @@ body{
 }
 .site-logo{
     background: var(--color-backg-logo);
-    padding: 2px;
-    border: 1px solid var(--color-border-high);
+    padding: 2px;    
+    border: 1px solid var(--color-border-logo);
     border-radius: 3px;
 }
+
+/* Overload Bootstrap*/
+.navbar-brand{
+ margin-right: 0 !important;   
+}
+
 .notUnderline{
     text-decoration: none;
 }

@@ -1,7 +1,7 @@
 <?php
 
 if(!defined('K_DEBUG')) define('K_DEBUG', true);
-if(!defined('VERSION')) define('VERSION', 'v0.3.1 - 23/07/2022 20:53');
+if(!defined('VERSION')) define('VERSION', 'v0.4.0 - 26/07/2022 23:33');
 if(!defined('FOOTER')) define('FOOTER', 'alainkelleter.be - '.VERSION);
 if(!defined('THEME')) define('THEME', 'akstudio');
 if(!defined('PATH_ICON')) define('PATH_ICON', 'pub' . DS . 'icons' . DS);
@@ -10,11 +10,14 @@ if(!defined('PATH_IMG')) define('PATH_IMG', 'pub' . DS . 'img' . DS);
 if(!defined('LOGO')) define('LOGO', 'assets' . DS . 'theme' . DS . 'akstudio' . DS . 'img' . DS . 'logo-ak.png');
 if(!defined('FAVICON')) define('FAVICON', 'assets' . DS . 'theme' . DS . 'akstudio' . DS . 'img' . DS . 'icon-ak.png');
 
+// Définit la durée d'une session (1h par défaut)
+if(!defined('SESSLIFETIME')) define ('SESSLIFETIME', 3600 * 1);
+
 // Configure le niveau d'erreurs en fonction du mode de debugging
 if(K_DEBUG) error_reporting(E_ALL | E_STRICT); else error_reporting(0);
 
 // Definit les extensions autorisées pour les fichiers téléversés 
-$allowExtensions = array( 'zip' , 'rar' , 'tar', 'tar.gz' , 'txt', 'pdf', 'epub', 'md', 'odt', 'odf', 'ods', 'png', 'webm', 'webp', 'flac', 'ogg', 'docx', 'xlsx', 'pptx', 'jpg', "mp3", "mp4" );
+$allowExtensions = array( 'epub', 'zip' , 'rar' , 'tar', 'tar.gz' , 'txt', 'pdf', "psd", 'md', 'odt', 'odf', 'ods', 'png', 'webm', 'webp', 'flac', 'ogg', 'docx', 'xlsx', 'pptx', 'jpg', 'jpeg', "mp3", "mp4" );
 if(!defined('ALLOWEXT')) define('ALLOWEXT', serialize($allowExtensions)); 
 
 // Definit la taille maximum des fichiers téléversés (1mo = 1048576)

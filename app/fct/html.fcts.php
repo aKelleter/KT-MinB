@@ -291,7 +291,7 @@ function AKMakeDiv( $type, $classes, $message, $role = null, $id = null, $innerS
 {
     Switch($type)
     {
-        case 'ALERT':
+        case 'danger':
             $div = '<div class="';           
             $div .= $classes.' text-center"';
             $div .= 'id="'.$id.'" ';
@@ -300,7 +300,7 @@ function AKMakeDiv( $type, $classes, $message, $role = null, $id = null, $innerS
             if(isset($innerSpan)) $div .= '<span id="submsg">'.$innerSpan.'</span>';
             $div .= '</div>';
 
-        case 'SUCCESS':
+        case 'success':
             $div = '<div class="';
             $div .= $classes.' text-center"';
             $div .= 'id="'.$id.'" ';
@@ -309,7 +309,16 @@ function AKMakeDiv( $type, $classes, $message, $role = null, $id = null, $innerS
             if(isset($innerSpan)) $div .= '<span id="submsg">'.$innerSpan.'</span>';
             $div .= '</div>';
 
-        case 'WARNING':
+        case 'warning':
+            $div = '<div class="';
+            $div .= $classes.' text-center"';
+            $div .= 'id="'.$id.'" ';
+            $div .= ' role="'.$role.'">';
+            $div .= $message;
+            if(isset($innerSpan)) $div .= '<span id="submsg">'.$innerSpan.'</span>';
+            $div .= '</div>';
+            
+        case 'info':
             $div = '<div class="';
             $div .= $classes.' text-center"';
             $div .= 'id="'.$id.'" ';
@@ -323,19 +332,28 @@ function AKMakeDiv( $type, $classes, $message, $role = null, $id = null, $innerS
     return $div;
 }
 
+/**
+ * Retourne le code HTML de l'affichage des fichiers joints
+ * 
+ * @param type $jointFiles
+ * @return string
+ */
 function HTMLArticleFiles($jointFiles)
 {
     //DEBUG// AKPrintR($jointFiles);
     $html = '';
-    $html .= '<h3 class="titre-fichier-joint mt-5">{trm-fichier-joint}</h3>';
-    $html .= '<hr>';
-    foreach($jointFiles as $file)
-    {
-            $html .= '<div class="row">'; 
-            $html .= '<div class="col-md-12">'; 
-            $html .= HTMLFileRow($file["filename"]);   
-            $html .= '</div>';
-            $html .= '</div>';
+    if(!empty($jointFiles))    
+    {    
+        $html .= '<h3 class="titre-fichier-joint mt-5">{trm-fichier-joint}</h3>';
+        $html .= '<hr>';
+        foreach($jointFiles as $file)
+        {
+                $html .= '<div class="row">'; 
+                $html .= '<div class="col-md-12">'; 
+                $html .= HTMLFileRow($file["filename"]);   
+                $html .= '</div>';
+                $html .= '</div>';
+        }
     }    
     return $html;
 }

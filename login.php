@@ -27,7 +27,7 @@ if(isset($_POST['action']) && $_POST['action'] == 'login')
     }
 
     // Si identification ok
-    if($st['stat']) 
+    if($st['stat'] === true) 
     {
         // Récupération des datas du user
         $_SESSION['login'] =  $st['login'];
@@ -39,17 +39,19 @@ if(isset($_POST['action']) && $_POST['action'] == 'login')
 
         // Initialiser Identify sur (1) et indiquer ainsi que l'utilisateur est identifié
         $_SESSION['IDENTIFY'] = 1;
-
-        header("location: index.php");
+        header("location: index.php?msg=Identification ok");
 
     }else{
+        
         // Afficher une div d'alerte avec le message correspondant
-        $msg = AKMakeDiv('ALERT', 'alert alert-danger', $st['msg'], 'alert' );
+        $msg = AKMakeDiv('danger', 'alert alert-danger', $st['msg'], 'alert' );
 
         // Initialiser Identify sur (0)  et ainsi refuser l'accès aux autres modules a tous les utilisateurs non identifiés.
         $_SESSION['IDENTIFY'] = 0;
         $_SESSION['firstname'] = null;
     } 
+    
+    
 }else{
     $action = null;
     $user = null;

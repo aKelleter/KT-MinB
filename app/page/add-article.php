@@ -6,27 +6,24 @@
 // --------------------------------------------------------------------------------------------
 // CONTROLER SECTION
 $msg = null;
-
+ 
 if(isset($_POST['form_name']) && $_POST['form_name'] == 'add-article')
 {
     
     if(empty($_FILES)) $_FILES = null;
         
-    //DEBUG//  AKPrintR($_POST);  AKPrintR($_FILES);  die();
-        
+    //DEBUG// AKPrintR($_POST);  AKPrintR($_FILES);  //die();
     $rt = addArticleMulti($_POST);
-   
-    // Préparation de la redirection
-    $redirection_url = GENRouteLink('index.php', $_SESSION['route']);
     
-    // Si tout est OK
-    if($rt['status'])
-    {
-        $msg = AKMakeDiv('SUCCESS', 'alert alert-success text-center', $rt['msg'], 'success' );
-        // Redirection    
-        header("refresh:2; $redirection_url" );    
-    }else
-         $msg = AKMakeDiv('ALERT', 'alert alert-danger text-center', $rt['msg'], 'alert' ); 
+    // Message de retour
+    $msg = AKMakeDiv($rt['type'], 'alert alert-'.$rt['type'].' text-center', $rt['msg'], 'alert');
+    
+    // Préparation de la redirection
+    $redirection_url = GENRouteLink('index.php', $_SESSION['route']);    
+    // Redirection    
+    header("refresh:3; $redirection_url" );    
+    
+     
     
 }
 

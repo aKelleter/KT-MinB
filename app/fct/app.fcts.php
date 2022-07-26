@@ -224,6 +224,7 @@ function AKIdentUser($user, $passwd)
             $st['lastname'] = $db['lastname'];
             $st['email'] = $db['email'];        
             $st['user_id'] = $db['id'];
+            $st['status'] = $db['status'];
             
         }else{
             $st['stat'] = false;
@@ -271,23 +272,24 @@ function GENRouteLink($link, $route = null)
 * 
 * @return boolean
 */
-function AKUploadFile( $index, $nameFile, $destination, $maxsize = false, $extensions = false ) {
+function AKUploadFile($index, $nameFile, $destination, $maxsize = false, $extensions = false)
+{
 
     // Test si le fichier est correctement uploadé
-    if (!isset($_FILES[$index]) OR $_FILES[$index]['error'] > 0) return false;
+    if (!isset($_FILES[$index]) OR $_FILES[$index]['error'] > 0) return 'UFERR';
 
     // Test la taille limite
-    if ($maxsize !== false AND $_FILES[$index]['size'] > $maxsize) return false;
+    if ($maxsize !== false AND $_FILES[$index]['size'] > $maxsize) return 'UFSIZE';
 
     // Test de l'extension
     $ext = substr(strrchr($_FILES[$index]['name'],'.'),1);
-    if ($extensions !== false AND !in_array($ext, $extensions)) return false;
+    if ($extensions !== false AND !in_array($ext, $extensions)) return 'UFEXT';
 
     // Téléversement
     if(move_uploaded_file($_FILES[$index]['tmp_name'], ABSPATH.$destination.$nameFile))
         return true;
     else
-        return false;
+        return 'UFUP';
 
 }  
 
@@ -326,7 +328,7 @@ function AKuploadPicture( $file )
 * @param array $array
 * @return string html
 */
-function AKarrayInline($array)
+function AKarrayInBadgeline($array)
 {
 
     $html = NULL;
@@ -538,11 +540,11 @@ function AKPrintR($ar, $tag = null, $type = 'PRINTR')
  */
 function AKAllIsTrue($array) 
 {
-    $size = count($array);
+$size = @count($array);
     $cpt = 0;
-
+   
     foreach($array as $val)
-        if($val) $cpt++;
+        if($val === true) $cpt++;       
 
     if($size == $cpt)
         return true;
@@ -602,4 +604,78 @@ function AKDeleteFileExtension($fileName)
 
   // Supprime l'extention
   return substr($fileName, 0, $pos);
+}
+
+/**
+ * Cette fonction retourne true si la chaîne '$searchString' est trouvée dans 
+ * la chaîne '$inTheString'. Elle retourne false dans le cas contraire 
+ * 
+ * @param string $string
+ * @return boolean
+ */
+function AKStrContainsStr($inTheString, $searchString)
+{
+    
+    $pattern1 = "/^((?!$searchString).)+$/is";
+    $pattern2 = "/$searchString/i";
+    
+    if(preg_match($pattern2, $inTheString) === 1)
+        return true;            
+    else 
+        return false;
+}
+
+/**
+* Retourne les éléments d'un tableau dans des badges
+* 
+* @param array $array
+* @return string html
+*/
+function AKArrayInline($array, $type = 'BASIC', $list = null) {
+
+    $html = '';
+    $error = 'File uploaded !';
+    
+    foreach($array as $key => $value)
+    {
+        switch ($type)
+        {
+            case 'BASIC':
+                $html .= ' '.$value.' ';
+                break;
+            
+            case 'ERROR':
+                
+                if($value === true)
+                    $error = '<strong>File uploaded !</strong>'.'<br>';
+                elseif($value === 'UFERR')
+                    $error = '<strong>Problem during transfer</strong>'.'<br>';
+                elseif($value === 'UFSIZE')
+                    $error = '<strong>File size too large</strong>'.'<br>';
+                elseif($value === 'UFEXT')
+                     $error = '<strong>Wrong file extension</strong>'.'<br>';
+                elseif($value === 'UFUP')
+                    $error = '<strong>Problem while uploading to server</strong>'.'<br>';
+                elseif($value === 'AFERR')
+                  $error = '<strong>Problem adding file to DB</strong>'.'<br>';
+                               
+                // Formattage de la sortie
+                if(!empty($list))
+                    $html .= ' '.$list[$key].' : '.$error.' ';
+                else
+                    $html .= ' '.$key.' : '.$error.' ';
+                
+                break;
+
+            default:
+                break;
+        }        
+        
+    }
+
+    // Suppression des deux derniers caractères (espace + virgule) de la chaîne
+    //$html = substr($html, 0, -2);
+
+    return $html;
+
 }
