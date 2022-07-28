@@ -42,7 +42,7 @@ function loadParams()
 function loadAllArticles()
 {
     $con = new Model('content');
-    $sql = ' SELECT * FROM ' . $con->credentials['prefix'] . $con->table .' ORDER  BY id DESC';
+    $sql = ' SELECT * FROM ' . $con->credentials['prefix'] . $con->table .' WHERE published = 1 ORDER  BY id DESC';
 
     if ($con)
     {
@@ -260,7 +260,8 @@ function addArticleMulti($datas)
             teaser,
             minithumb,
             article,
-            slug                    
+            slug,
+            published
             ) 
             VALUES(
             :title,
@@ -268,7 +269,8 @@ function addArticleMulti($datas)
             :teaser,
             :minithumb,
             :article,
-            :slug
+            :slug,
+            :published
             )
         ");
 
@@ -279,6 +281,7 @@ function addArticleMulti($datas)
             "minithumb" => $minithumb_article,
             "article" => nl2br(htmlentities($content_article)),
             "slug" => AKSlugify($title_article),
+            "published" => (isset($published_article) && $published_article == 'on')? 1 : 0
         ]);
         
         $flagAddArticleInDB =($rt['status'])? true : false; 

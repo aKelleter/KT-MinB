@@ -1,14 +1,16 @@
 
 :root { 
-    --color-main: #F6F9FC;    
+    --main: #F6F9FC;    
     --font-main: #47474b;
-    --color-input-group: #f1f7fc;
-    --color-backg-article : #FFFFFF;
-    --color-backg-logo: #dde7f0;
-    --color-border-logo: #1d202b;
-    --color-border-low: #C0C0C0;
-    --color-border-verylow: #d2d4e0;
+    --input-group: #f1f7fc;
+    --backg-article : #FFFFFF;
+    --backg-logo: #dde7f0;
+    --border-logo: #1d202b;
+    --border-low: #C0C0C0;
+    --border-verylow: #d2d4e0;
+    --border-discret: #cccccc;
     --sig-error : #e74093;
+    
 
 }
 
@@ -16,7 +18,7 @@
 
 body{
     font-family: 'Barlow', sans-serif !important;
-    background: var(--color-main) !important;
+    background: var(--main) !important;
     color: var(--font-main);
 }
 
@@ -24,9 +26,9 @@ body{
     display:none;    
 }
 .site-logo{
-    background: var(--color-backg-logo);
+    background: var(--backg-logo);
     padding: 2px;    
-    border: 1px solid var(--color-border-logo);
+    border: 1px solid var(--border-logo);
     border-radius: 3px;
 }
 
@@ -41,24 +43,24 @@ body{
 
 .form-group {
     border-radius: 5px;
-    background-color: var(--color-input-group);
+    background-color: var(--input-group);
     padding: 5px;
     margin: 9px 0;
-    border: 1px solid var(--color-border-low);
+    border: 1px solid var(--border-low);
     box-shadow: 0 6px 12px -2px rgb(50 50 93 / 25%), 0 3px 7px -3px rgb(0 0 0 / 30%);
 }
 
 .div-article {
     border-radius: 5px;
-    background-color: var(--color-input-group);
+    background-color: var(--input-group);
     padding: 5px;
-    margin: 9px 0;
-    border: 1px solid var(--color-border-verylow);
+    margin: 9px;
+    border: 1px solid var(--border-verylow);
     /*box-shadow: 0 6px 12px -2px rgb(50 50 93 / 25%), 0 3px 7px -3px rgb(0 0 0 / 30%);*/
 }
 
 .div-article:hover{
-    background-color: var(--color-backg-logo);
+    background-color: var(--backg-logo);
 }
 
 .sig-error {
@@ -73,8 +75,8 @@ body{
 .files-infos {
     line-height: 1.5;
     padding: 5px 10px; 
-    background-color: var(--color-backg-logo);
-    border: 1px solid #cccccc;
+    background-color: var(--backg-logo);
+    border: 1px solid var(--border-discret);
     color: #333;
     display: inline-block;
     text-align: center;
@@ -88,15 +90,15 @@ body{
 
 .article{    
     padding: 5px 10px; 
-    background-color: var(--color-backg-article);
-    border: 1px solid #cccccc;    
+    background-color: var(--backg-article);
+    border: 1px solid var(--border-discret);    
     border-radius: 4px;     
     padding: 20px;
     box-shadow: 0 6px 12px -2px rgb(50 50 93 / 25%), 0 3px 7px -3px rgb(0 0 0 / 30%);
 }
 
 .btn-down:hover {
-    background-color: var(--color-backg-logo);
+    background-color: var(--backg-logo);
     color: var(--font-main);; 
 }
 
@@ -107,6 +109,37 @@ body{
 .vBot { 
   vertical-align: bottom;    
 }
+
+.minHeightDivArticle{
+    min-height: 130px !important;
+}
+
+.news-card{
+    color: var(--font-main) !important;
+}
+
+#news-date{
+    max-width: 64px;
+    font-size: 0.8rem !important;
+    overflow: hidden;
+}
+
+.news-card-ele{
+    border-left: 1px dashed;     
+    border-color: var(--border-discret);
+}
+
+.center-ele{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.min-ele{
+   font-size: 0.8rem !important; 
+   color: var(--font-main);
+}
+
 
 /* -- Material Design Icons -- */
 .mdi::before {

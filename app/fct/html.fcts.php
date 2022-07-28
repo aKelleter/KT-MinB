@@ -162,14 +162,14 @@ function HTMLListArticlesWithDiv($array)
             if($col == 'position') $position = $val;        
         }
         $html .='              
-            <div class="container kt-box-shadow m-2 p-1">                 
+            <div class="container article kt-box-shadow m-2 p-1">  
+                <a class="notUnderline news-card" href="'.PATH_PAGE.'article.php?id='.$id.'">
                 <div class="row div-article">                
-                    <div class="col-md-1">'.$position.'</div>
-                    <div class="col-md-2"><a class="notUnderline" href="'.PATH_PAGE.'article.php?id='.$id.'">'.HTMLMiniThumb($minithumb,$_SESSION['route']).'</a></div>
-                    <div class="col-md-2">'.$date.'</div>
-                    <div class="col-md-2"><a class="notUnderline" href="'.PATH_PAGE.'article.php?id='.$id.'">'.$titre.'</a></div>
-                    <div class="col-md-5">'. html_entity_decode($teaser).'</div>
-                </div>               
+                    <div class="col-lg-1 d-flex flex-row"><div class="align-self-center justify-content-center">'.$position.'</div></div>
+                    <div class="col-lg-2 news-card-ele d-flex flex-row"><div class="align-self-center justify-content-center">'.HTMLMiniThumb($minithumb,$_SESSION['route']).'<div class="fw-light fs-6" id="news-date">'.$date.'</div></div></div>                                        <div class="col-lg-2 news-card-ele d-flex flex-row"><div class="align-self-center justify-content-center">'.$titre.'</div></div>
+                    <div class="col-lg-7 news-card-ele d-flex flex-row"><div class="align-self-center justify-content-center">'. html_entity_decode($teaser).'</div></div>
+                </div>  
+                </a>
             </div>            
         ';          
     }
@@ -390,4 +390,73 @@ function HTMLFileRow($filename){
     '; 
 
     return $html;  
+}
+
+/**
+* Retourne le code html des boutons radios indiquant 
+* le status de publication du contenu
+* 
+* @return $html 
+*/
+function HTMLAddBtnRadioPublished()
+{ 
+    $html = '';
+
+    $html .= '
+    <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" id="published_article" name="published_article" checked>
+        <label class="form-check-label" for="published_article">Article published</label>
+    </div>
+    ';
+    
+    return $html; 
+}
+
+/**
+* Retourne le code html des boutons radios indiquant 
+* le status de publication de la page
+* 
+* @param int $id
+*/
+function _HTMLRadioBtnPublished($id) {
+
+    $con = new Model('contgen');
+    $radioBtnCtrl = $con->db->prepare("
+        SELECT
+        published
+        FROM
+        content
+        WHERE
+        id = :id
+    ");
+    $radioBtnCtrl->bindParam(':id', $id, PDO::PARAM_INT);
+    $radioBtnCtrl->execute();
+    $radioBtnCtrl = $radioBtnCtrl->fetch(PDO::FETCH_ASSOC);
+
+    $html = '';
+
+    if($radioBtnCtrl['published']){
+        $html .= '
+        <label class="radio-inline">
+        <input type="radio" class="access_publique" name="page_privee" id="page_privee" value="0"> <span class="">{trm-public}</span>
+        </label>
+        <label class="radio-inline">
+        <input type="radio" class="access_prive" name="page_privee" id="page_privee" value="1" checked> <span class="">{trm-privee}</span>
+        <input type="text" class="prive_passwd" id="prive_passwd" name="prive_passwd" placeholder="{trm-mot-de-passe}" value="{value-prive-passwd}">
+        </label>
+
+        ';    
+    }else{
+        $html .= '
+        <label class="radio-inline">
+        <input type="radio" class="access_publique" name="page_privee" id="page_privee" value="0" checked> <span class="">{trm-public}</span>
+        </label>
+        <label class="radio-inline">
+        <input type="radio" class="access_prive" name="page_privee" id="page_privee" value="1"> <span class="">{trm-privee}</span>
+        <input type="text" class="prive_passwd" id="prive_passwd" name="prive_passwd" placeholder="{trm-mot-de-passe}" value="{value-prive-passwd}">
+        </label>
+        ';             
+    }
+
+    return $html; 
 }

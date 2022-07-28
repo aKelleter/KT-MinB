@@ -10,7 +10,7 @@
         <div class="col-2"></div>
         <div class="col-8">
           <div id="article" class="container mt-5">
-            {titre-page-add-article}
+              <h4>{titre-page-add-article}</h4>
             <hr>
             {message}
             <div class="container">
@@ -19,15 +19,20 @@
                     <label for="title-article" class="form-label">Title</label>
                     <input type="text" class="form-control" id="title_article" name="title_article">                    
                   </div>
+                  <div class="mb-3 form-group">                    
+                    {radiobtn-status}
+                  </div>  
                   <div class="mb-3 form-group">
                       <label for="minithumb-article" class="form-label">Icon</label>
                       <select class="form-select" id="minithumb_article" name="minithumb_article">                        
-                        <option value="start.png">Start</option>                        
+                        <option value="start.png">Start</option> 
+                        <option value="photo.png">Photo</option>
                       </select>
                   </div>    
                   <div class="mb-3 form-group">
                     <label for="teaser-article" class="form-label">Teaser</label>
-                    <textarea class="form-control editor" id="teaser_article" name="teaser_article"></textarea>
+                    <textarea class="form-control" id="teaser_article" name="teaser_article" maxlength="190" rows="3"></textarea>
+                    <span class="min-ele"><i>190 characters max</i></span>
                   </div>
                   <div class="mb-3 form-group">
                     <label for="content-article" class="form-label">Article</label>

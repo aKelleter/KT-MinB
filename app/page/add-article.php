@@ -12,7 +12,8 @@ if(isset($_POST['form_name']) && $_POST['form_name'] == 'add-article')
     
     if(empty($_FILES)) $_FILES = null;
         
-    //DEBUG// AKPrintR($_POST);  AKPrintR($_FILES);  //die();
+    //DEBUG//  AKPrintR($_POST);  AKPrintR($_FILES);  die();
+    
     $rt = addArticleMulti($_POST);
     
     // Message de retour
@@ -44,7 +45,7 @@ else
 $pageTitle = 'Alain Kelleter - Add Article';
 $engine->set_var('titre-page-add-article', 'Add an article');
 $engine->set_var('message', $msg);
-
+$engine->set_var('radiobtn-status', HTMLAddBtnRadioPublished());
 
 // Include common constant and var 
 include ABSPATH . DS . D_APP . DS . 'common.php';
