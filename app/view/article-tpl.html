@@ -7,14 +7,15 @@
     {HTMLNavbar}  
     <div class="">
       <div class="row">
-        <div class="col-2"></div>
-        <div class="col-8">
+        <div class="col-1"></div>
+        <div class="col-10">
           <div id="article" class="container mt-5">
             <h3 class="">{article-title}</h3>
             <div class="mt-4"><p class="small"><i>{article-teaser}</i></p></div>
-            <hr>
+            <hr class="noMargin">
+            {menu-article}
             {message}
-            <div class="mb-2 text-end"><small>Publié le : <i>{article-date}</i></small></div>
+            <div class="mb-2 mt-2 text-end"><small>Publié le : <i>{article-date}</i></small></div>
             <div class="mb-3 article minHeightDivArticle">
             {HTMLArticle}
             </div>
@@ -26,7 +27,7 @@
             {HTMLFooter}
           </div>    
         </div>
-        <div class="col-2"></div>
+        <div class="col-1"></div>
       </div>
     </div>  
     {HTMLJS}

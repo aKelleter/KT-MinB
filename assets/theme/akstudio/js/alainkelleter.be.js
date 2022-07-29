@@ -24,19 +24,25 @@ $(document).ready(function() {
     });
 });
 
-// TinyMCE and Popover
+// TinyMCE / Popover / Tooltip
 $(document).ready(function() {
     
       
     tinymce.init({
       selector: 'textarea.editor',
-      plugins: 'advlist autolink lists link image charmap preview anchor pagebreak',
+      plugins: 'advlist autolink lists link image charmap preview anchor pagebreak code',
       toolbar_mode: 'floating',
     });
     
     // Popover
     const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
     const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl));
+    
+    // Tooltip
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+    return new bootstrap.Tooltip(tooltipTriggerEl)
+})
 });
 
 

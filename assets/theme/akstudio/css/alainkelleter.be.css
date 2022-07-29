@@ -10,6 +10,7 @@
     --border-verylow: #d2d4e0;
     --border-discret: #cccccc;
     --sig-error : #e74093;
+    --menu-article : #40c0e7;
     
 
 }
@@ -138,6 +139,18 @@ body{
 .min-ele{
    font-size: 0.8rem !important; 
    color: var(--font-main);
+}
+
+.noMargin{
+    margin: 0 !important;
+}
+
+.marginHRMenuGeneral{
+    margin-top: 5px !important;
+}
+
+.menu-article{
+    color: var(--menu-article);
 }
 
 

@@ -19,3 +19,4 @@ $engine->set_var('url-index', GENRouteLink('index.php', $_SESSION['route']));
 $engine->set_var('url-signout', GENRouteLink('logout.php', $_SESSION['route']));
 $engine->set_var('url-signin', GENRouteLink('login.php', $_SESSION['route']));
 $engine->set_var('url-add-article', GENRouteLink(D_APP.DS.D_PAGE.DS.'add-article.php', $_SESSION['route']));
+$engine->set_var('url-edit-article', GENRouteLink(D_APP.DS.D_PAGE.DS.'edit-article.php', $_SESSION['route']));

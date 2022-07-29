@@ -75,12 +75,12 @@ function HTMLJS($route)
 }
 
 /**
- * Retourne le code HTML des news sous la forme d'une liste compacte
+ * Retourne le code HTML des news sous la forme d'une liste compacte tabulaire
  * 
  * @param array $array
  * @return string
  */
-function HTMLListArticlesLikeArray($array)
+function HTMLListArticlesWithArray($array)
 {
     $id = null;
     $date = null;
@@ -137,6 +137,12 @@ function HTMLListArticlesLikeArray($array)
 
 }
 
+/**
+ * Retourne le code HTML des news sous la forme d'une liste compacte de div
+ * 
+ * @param array $array
+ * @return string
+ */
 function HTMLListArticlesWithDiv($array)
 {
     $id = null;
@@ -263,7 +269,7 @@ function HTMLMenuUser()
               </a>
               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <li><a class="dropdown-item" href="{url-add-article}">Add</a></li>
-                <li><a class="dropdown-item" href="#">Manage</a></li>
+                <!--<li><a class="dropdown-item" href="#">Manage</a></li>-->
                 <li><hr class="dropdown-divider"></li>
                 <li><a class="dropdown-item" href="{url-signout}">Sign out</a></li>
               </ul>
@@ -459,4 +465,37 @@ function _HTMLRadioBtnPublished($id) {
     }
 
     return $html; 
+}
+
+/**
+ * Retourne le code HTML du menu de l'article
+ * 
+ * @param type $id
+ * @return string
+ */
+function HTMLMenuArticle($id)
+{
+    $html = '';
+    
+    $html .='
+        <div class="mb-2 text-end"><a href="{url-edit-article}?id='.$id.'"><i class="mdi mdi-keyboard-variant menu-article" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"></i></a></div>
+    ';
+    
+    return $html;
+}
+
+/**
+ * Retourne le code HTML du menu général sur la page
+ * 
+ * @return string
+ */
+function HTMLMenuGeneralPage()
+{
+    $html = '';
+    
+    $html .='
+        <div class="mb-2 text-end marginHRMenuGeneral"><a href="{url-add-article}"><i class="mdi mdi-newspaper-plus menu-article" data-bs-toggle="tooltip" data-bs-placement="top" title="Add Article"></i></a></div>
+    ';
+    
+    return $html;
 }
