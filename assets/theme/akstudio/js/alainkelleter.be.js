@@ -42,7 +42,13 @@ $(document).ready(function() {
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
     var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
     return new bootstrap.Tooltip(tooltipTriggerEl)
-})
+    });
+    
+    // Fade Out Div message Index
+    var fade_out = function() {
+        $("#message-index").fadeOut().empty();
+    }
+    setTimeout(fade_out, 3000);
 });
 
 

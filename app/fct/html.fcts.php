@@ -468,34 +468,30 @@ function _HTMLRadioBtnPublished($id) {
 }
 
 /**
- * Retourne le code HTML du menu de l'article
+ * Retourne le code HTML du menu dédié à l'article
  * 
  * @param type $id
  * @return string
  */
 function HTMLMenuArticle($id)
 {
-    $html = '';
-    
+    $html = '';    
     $html .='
         <div class="mb-2 text-end"><a href="{url-edit-article}?id='.$id.'"><i class="mdi mdi-keyboard-variant menu-article" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"></i></a></div>
-    ';
-    
+    ';    
     return $html;
 }
 
 /**
- * Retourne le code HTML du menu général sur la page
+ * Retourne le code HTML du menu général présent sur certaines pages
  * 
  * @return string
  */
 function HTMLMenuGeneralPage()
 {
-    $html = '';
-    
+    $html = '';    
     $html .='
         <div class="mb-2 text-end marginHRMenuGeneral"><a href="{url-add-article}"><i class="mdi mdi-newspaper-plus menu-article" data-bs-toggle="tooltip" data-bs-placement="top" title="Add Article"></i></a></div>
-    ';
-    
+    ';    
     return $html;
 }

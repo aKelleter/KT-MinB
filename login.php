@@ -39,7 +39,8 @@ if(isset($_POST['action']) && $_POST['action'] == 'login')
 
         // Initialiser Identify sur (1) et indiquer ainsi que l'utilisateur est identifié
         $_SESSION['IDENTIFY'] = 1;
-        header("location: index.php?msg=Identification ok");
+        $msg = 'Welcom on board <strong>'. $st['firstname'].'</strong>';
+        header("location: index.php?msg=$msg");
 
     }else{
         
