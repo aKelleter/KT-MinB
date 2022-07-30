@@ -1,7 +1,7 @@
 
 :root { 
     --main: #F6F9FC;    
-    --font-main: #47474b;
+    --font-main: #6a6a6a;
     --input-group: #f1f7fc;
     --backg-article : #FFFFFF;
     --backg-logo: #dde7f0;
@@ -9,18 +9,21 @@
     --border-low: #C0C0C0;
     --border-verylow: #d2d4e0;
     --border-discret: #cccccc;
-    --sig-error : #e74093;
-    --menu-article : #40c0e7;
-    
+    --sig-error: #e74093;
+    --backg-nonpublished: #faebf3;
+    --backg-nonpublished-hover: #f3d7e6;
+    --menu-item: #40c0e7;
+    --menu-item-danger: #e74093;
+    --menu-item-manage: #3dcd8a;
+    --border-info: #388f9c;
 
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Barlow:wght@200&display=swap');
-
 body{
-    font-family: 'Barlow', sans-serif !important;
+    
+    font-family: 'Ubuntu', sans-serif !important;
     background: var(--main) !important;
-    color: var(--font-main);
+    color: var(--font-main) !important;
 }
 
 #more-upload-link{
@@ -56,12 +59,23 @@ body{
     background-color: var(--input-group);
     padding: 5px;
     margin: 9px;
-    border: 1px solid var(--border-verylow);
-    /*box-shadow: 0 6px 12px -2px rgb(50 50 93 / 25%), 0 3px 7px -3px rgb(0 0 0 / 30%);*/
+    border: 1px solid var(--border-verylow);    
+}
+
+.div-article-nonpublished {
+    border-radius: 5px;
+    background-color: var(--backg-nonpublished);
+    padding: 5px;
+    margin: 9px;
+    border: 1px solid var(--border-verylow);    
 }
 
 .div-article:hover{
     background-color: var(--backg-logo);
+}
+
+.div-article-nonpublished:hover{
+    background-color: var(--backg-nonpublished-hover);
 }
 
 .sig-error {
@@ -119,8 +133,8 @@ body{
     color: var(--font-main) !important;
 }
 
-#news-date{
-    max-width: 64px;
+.news-date{
+    max-width: 66px;
     font-size: 0.8rem !important;
     overflow: hidden;
 }
@@ -145,20 +159,59 @@ body{
     margin: 0 !important;
 }
 
-.marginHRMenuGeneral{
+.marginHRMenu{
     margin-top: 5px !important;
 }
 
-.menu-article{
-    color: var(--menu-article);
+.menu-item{
+    color: var(--menu-item);
+    border: 1px solid;
+    border-color: var(--menu-item);
+    border-radius: 3px; 
+    padding: 5px 0px 0px 0px;
+    margin: 0px 1px;
+    
+}
+
+.menu-item-danger{
+    color: var(--menu-item-danger);
+    border: 1px solid;
+    border-color: var(--menu-item-danger);
+    border-radius: 3px; 
+    vertical-align: bottom;
+    padding: 5px 0px 0px 0px;
+    margin: 0px 1px;
+}
+
+.menu-item-manage{
+    color: var(--menu-item-manage);
+    border: 1px solid;
+    border-color: var(--menu-item-manage);
+    border-radius: 3px; 
+    vertical-align: bottom;
+    padding: 5px 0px 0px 0px;
+    margin: 0px 1px;
+}
+
+.menu-item:hover, .menu-item-danger:hover, .menu-item-manage:hover{
+    color: var(--font-main);
+    border-color: var(--font-main);
+}
+
+.border-info{
+    border: 1px solid; 
+    border-color: var(--border-info);
 }
 
 
 /* -- Material Design Icons -- */
 .mdi::before {
     font-size: 24px;
-    line-height: 14px;
+    line-height: 24px;
 }
+
+/*
+
 .btn .mdi::before {
     position: relative;
     top: 4px;
@@ -217,3 +270,4 @@ body{
     top: 3px;
     left: -3px
 }
+*/

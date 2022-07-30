@@ -18,22 +18,25 @@ function HTMLHead($route, $pageTitle = null, $favicon = null)
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    
     <!-- Bootstrap CSS -->
     <link href="'.GENRouteLink('vendors/bootstrap5/css/bootstrap.min.css', $route).'" rel="stylesheet">
-    <!-- Font Awesome -->
-    <!--<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />-->
+    
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
-    <!-- MDB -->
-    <!--<link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.2.0/mdb.min.css" rel="stylesheet" />-->    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu&display=swap" rel="stylesheet">
+    
     <!-- Material Design Icon CSS -->
     <!--<link href="'.GENRouteLink('assets/theme/akstudio/css/mdi.css', $route).'" rel="stylesheet" />-->
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@mdi/font@6.9.96/css/materialdesignicons.min.css">
+    
     <!-- AlainKelleter CSS -->
     <link href="'.GENRouteLink('assets/theme/akstudio/css/alainkelleter.be.css', $route).'" rel="stylesheet" />  
         
     <!-- AlainKelleter Favicon -->    
     <link rel="icon" type="image/x-icon" href="'.GENRouteLink($favicon, $route).'">    
+        
     <title>'.$pageTitle.'</title>    
     ';
 
@@ -164,15 +167,21 @@ function HTMLListArticlesWithDiv($array)
             if($col == 'date') $date = convertDateEnToFr($val);        
             if($col == 'title') $titre = $val;        
             if($col == 'teaser') $teaser = $val;        
-            if($col == 'minithumb') $minithumb = $val;        
+            if($col == 'minithumb') $minithumb = $val;  
+            if($col == 'slug') $slug = $val;
+            if($col == 'published') $published = $val;
             if($col == 'position') $position = $val;        
         }
+        
+        ($published)? $class_row ='div-article' : $class_row ='div-article-nonpublished';
+        ($published)? $icon ='' : $icon ='<i class="mdi mdi-eye-off-outline" data-bs-toggle="tooltip" data-bs-placement="top" title="non published"></i>';
+        
         $html .='              
             <div class="container article kt-box-shadow m-2 p-1">  
                 <a class="notUnderline news-card" href="'.PATH_PAGE.'article.php?id='.$id.'">
-                <div class="row div-article">                
-                    <div class="col-lg-1 d-flex flex-row"><div class="align-self-center justify-content-center">'.$position.'</div></div>
-                    <div class="col-lg-2 news-card-ele d-flex flex-row"><div class="align-self-center justify-content-center">'.HTMLMiniThumb($minithumb,$_SESSION['route']).'<div class="fw-light fs-6" id="news-date">'.$date.'</div></div></div>                                        <div class="col-lg-2 news-card-ele d-flex flex-row"><div class="align-self-center justify-content-center">'.$titre.'</div></div>
+                <div class="row '.$class_row.'">                
+                    <div class="col-lg-1 d-flex flex-row"><div class="align-self-center justify-content-center">'.$position.' '.$icon.'</div></div>
+                    <div class="col-lg-2 news-card-ele d-flex flex-row"><div class="align-self-center justify-content-center">'.HTMLMiniThumb($minithumb,$_SESSION['route']).'<div class="fw-light fs-6 news-date">'.$date.'</div></div></div>                                        <div class="col-lg-2 news-card-ele d-flex flex-row"><div class="align-self-center justify-content-center">'.$titre.'</div></div>
                     <div class="col-lg-7 news-card-ele d-flex flex-row"><div class="align-self-center justify-content-center">'. html_entity_decode($teaser).'</div></div>
                 </div>  
                 </a>
@@ -476,9 +485,43 @@ function _HTMLRadioBtnPublished($id) {
 function HTMLMenuArticle($id)
 {
     $html = '';    
+    if($_SESSION['IDENTIFY'] == 1)
+    {
+        $html .='
+        <div class="mb-2 text-end marginHRMenu">
+            <a href="{url-index}"><i class="mdi mdi-home-outline menu-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Homepage"></i></a>
+            <a href="{url-edit-article}?id='.$id.'"><i class="mdi mdi-application-edit-outline menu-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"></i></a>
+            <a href="{url-signout}"><i class="mdi mdi-application-export menu-item-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Sign Out"></i></a>
+        </div>
+        ';    
+    }else{
+        $html .='
+        <div class="mb-2 text-end marginHRMenu">
+            <a href="{url-index}"><i class="mdi mdi-home-outline menu-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Homepage"></i></a>
+            <a href="{url-signin}"><i class="mdi mdi-application-import menu-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Sign In"></i></a>
+        </div>
+        ';
+    }
+    
+    return $html;
+}
+
+/**
+ * Retourne le code HTML du menu dédié à l'article
+ * 
+ * @param type $id
+ * @return string
+ */
+function HTMLMenuEditArticle()
+{
+    $html = '';    
     $html .='
-        <div class="mb-2 text-end"><a href="{url-edit-article}?id='.$id.'"><i class="mdi mdi-keyboard-variant menu-article" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"></i></a></div>
-    ';    
+        <div class="mb-2 text-end marginHRMenu">
+            <a href="{url-index}"><i class="mdi mdi-home-outline menu-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Homepage"></i></a>            
+            <a href="{url-signout}"><i class="mdi mdi-application-export menu-item-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Sign Out"></i></a>
+        </div>
+        ';        
+    
     return $html;
 }
 
@@ -489,9 +532,24 @@ function HTMLMenuArticle($id)
  */
 function HTMLMenuGeneralPage()
 {
-    $html = '';    
-    $html .='
-        <div class="mb-2 text-end marginHRMenuGeneral"><a href="{url-add-article}"><i class="mdi mdi-newspaper-plus menu-article" data-bs-toggle="tooltip" data-bs-placement="top" title="Add Article"></i></a></div>
-    ';    
+    $html = '';  
+    if($_SESSION['IDENTIFY'] == 1)
+    {
+        $html .='
+        <div class="mb-2 text-end marginHRMenu">
+            <a href="{url-index}"><i class="mdi mdi-home-outline menu-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Homepage"></i></a>
+            <a href="{url-add-article}"><i class="mdi mdi-newspaper-plus menu-item-manage" data-bs-toggle="tooltip" data-bs-placement="top" title="Add Article"></i></a>
+            <a href="{url-signout}"><i class="mdi mdi-application-export menu-item-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Sign Out"></i></a>
+        </div>
+        ';
+    }else{
+        $html .='
+        <div class="mb-2 text-end marginHRMenu">
+            <a href="{url-index}"><i class="mdi mdi-home-outline menu-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Homepage"></i></a>
+            <a href="{url-signin}"><i class="mdi mdi-application-import menu-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Sign In"></i></a>
+        </div>
+        ';
+    }
+        
     return $html;
 }

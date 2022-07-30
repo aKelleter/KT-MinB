@@ -35,11 +35,52 @@ function loadParams()
 }
 
 /**
- * Retourne le tableau des news
+ * Retourne le tableau de toutes les article (pour l'auteur, ce compris les non publiées)
  * 
  * @return array
  */
 function loadAllArticles()
+{
+    $con = new Model('content');
+    $sql = ' SELECT * FROM ' . $con->credentials['prefix'] . $con->table .' ORDER  BY id DESC';
+
+    if ($con)
+    {
+
+        $req = $con->db->query($sql);
+
+        $list = array();
+        $datas = $req->fetchall();
+        $pos = sizeof($datas);
+        $i = 0;          
+        foreach ($datas as $data)
+        {
+            $list [$i] = array(
+                'id' => $data ['id'],
+                'title' => $data ['title'],
+                'date' => $data ['date'],
+                'teaser' => $data ['teaser'],
+                'article' => $data ['article'],
+                'minithumb' => $data ['minithumb'],
+                'slug' => $data ['slug'],
+                'published' => $data ['published'],
+                'position' => $pos
+            );
+            $pos --;
+            $i++;
+        }
+        return $list;
+
+    }else
+        return false;
+}
+
+/**
+ * Retourne le tableau des articles publiés uniquement (pour le visiteur)
+ * 
+ * @return array
+ */
+function loadPublishedArticles()
 {
     $con = new Model('content');
     $sql = ' SELECT * FROM ' . $con->credentials['prefix'] . $con->table .' WHERE published = 1 ORDER  BY id DESC';
@@ -62,6 +103,8 @@ function loadAllArticles()
                 'teaser' => $data ['teaser'],
                 'article' => $data ['article'],
                 'minithumb' => $data ['minithumb'],
+                'slug' => $data ['slug'],
+                'published' => $data ['published'],
                 'position' => $pos
             );
             $pos --;

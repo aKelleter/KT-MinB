@@ -46,14 +46,16 @@ $(document).ready(function() {
     
     // Fade Out Div message Index
     var fade_out = function() {
-        $("#message-index").fadeOut().empty();
+        $("#message-fade").fadeOut().empty();
+        cleanUriQueries();
+        
     }
     setTimeout(fade_out, 3000);
 });
 
 
 /**
- * Fonction de suppression d'un fichier joint
+ * Suppression d'un fichier joint
  * 
  * @param {type} eleId
  * @returns {undefined}*
@@ -68,4 +70,25 @@ function deleteAttachment(eleId) {
     if (elementIdExist === false) {
             $("#more-upload-link").show();
     }
+}
+
+/**
+ * Nettoie les paramètres de l'URI
+ * 
+ * @returns {undefined}
+ */
+function cleanUriQueries(){
+    
+    var uri = window.location.toString();
+    //alert( $(location).attr('pathname'));
+    
+    // Si on est sur la page index
+    if (window.location.href.indexOf("index") > -1)
+    {
+        if (uri.indexOf("?") > 0)
+        {
+            var clean_uri = uri.substring(0, uri.indexOf("?"));
+            window.history.replaceState({}, document.title, clean_uri);
+        }
+    }    
 }

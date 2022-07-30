@@ -17,12 +17,12 @@ if(isset($_POST['form_name']) && $_POST['form_name'] == 'add-article')
     $rt = addArticleMulti($_POST);
     
     // Message de retour
-    $msg = AKMakeDiv($rt['type'], 'alert alert-'.$rt['type'].' text-center', $rt['msg'], 'alert');
+    $msg = AKMakeDiv($rt['type'], 'alert alert-'.$rt['type'].' text-center', $rt['msg'], 'alert', 'message-fade');
     
     // Préparation de la redirection
     $redirection_url = GENRouteLink('index.php', $_SESSION['route']);    
     // Redirection    
-    header("refresh:3; $redirection_url" );    
+    header("refresh:4; $redirection_url" );    
     
      
     
@@ -46,6 +46,9 @@ $pageTitle = 'Alain Kelleter - Add Article';
 $engine->set_var('titre-page-add-article', 'Add an article');
 $engine->set_var('message', $msg);
 $engine->set_var('radiobtn-status', HTMLAddBtnRadioPublished());
+
+// General menu on page
+$engine->set_var('menu-general', HTMLMenuGeneralPage());
 
 // Include common constant and var 
 include ABSPATH . DS . D_APP . DS . 'common.php';
