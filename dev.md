@@ -1,4 +1,6 @@
 #EN COURS
 
-- Edit Article
-    * Créer une fonction pour afficher ét gérer l'édition du bouton/switch indiquant qu'un article est publié ou non
+- Edit Article : 21/07/2022
+    * Gérer les fichiers qui appartiennent déjà à l'article - Les afficher et permettre de les supprimer
+    * Afficher le slug en-dessous du titre
+    

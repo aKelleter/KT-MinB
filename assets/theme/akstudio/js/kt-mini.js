@@ -18,7 +18,7 @@ $(document).ready(function() {
         var moreUploadTag = '';
         moreUploadTag += '<div class="input-group mb-3">';
         moreUploadTag += '<input class="form-control" type="file" id="file_article' + upload_number + '" name="file_article' + upload_number + '"/>';
-        moreUploadTag += '<span class="input-group-text"><a class="notUnderline" href="javascript:deleteAttachment(' + upload_number + ')" onclick="return confirm(\'Are you really want to delete? \')"><i class="mdi mdi-trash-can-outline vBot"></i></a></span></div>';
+        moreUploadTag += '<span class="input-group-text"><a class="notUnderline colorlink" href="javascript:deleteAttachment(' + upload_number + ')" onclick="return confirm(\'Are you really want to delete? \')"><i class="mdi mdi-trash-can-outline vBot"></i></a></span></div>';
         $('<div id="deleteAttach' + upload_number + '">' + moreUploadTag + '</div>').fadeIn('slow').appendTo('#more-upload');
         upload_number++;
     });
@@ -47,9 +47,8 @@ $(document).ready(function() {
     // Fade Out Div message Index
     var fade_out = function() {
         $("#message-fade").fadeOut().empty();
-        cleanUriQueries();
-        
-    }
+        cleanUriQueries();        
+    }    
     setTimeout(fade_out, 3000);
 });
 
@@ -83,7 +82,7 @@ function cleanUriQueries(){
     //alert( $(location).attr('pathname'));
     
     // Si on est sur la page index
-    if (window.location.href.indexOf("index") > -1)
+    if (window.location.href.indexOf("index") > -1 || window.location.href.indexOf("edit-article") > -1)
     {
         if (uri.indexOf("?") > 0)
         {

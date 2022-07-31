@@ -28,11 +28,11 @@ function HTMLHead($route, $pageTitle = null, $favicon = null)
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu&display=swap" rel="stylesheet">
     
     <!-- Material Design Icon CSS -->
-    <!--<link href="'.GENRouteLink('assets/theme/akstudio/css/mdi.css', $route).'" rel="stylesheet" />-->
+    <!--<link href="'.GENRouteLink('assets/theme/'.THEME.'/css/mdi.css', $route).'" rel="stylesheet" />-->
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@mdi/font@6.9.96/css/materialdesignicons.min.css">
     
     <!-- AlainKelleter CSS -->
-    <link href="'.GENRouteLink('assets/theme/akstudio/css/alainkelleter.be.css', $route).'" rel="stylesheet" />  
+    <link href="'.GENRouteLink('assets/theme/'.THEME.'/css/kt-mini.css', $route).'" rel="stylesheet" />  
         
     <!-- AlainKelleter Favicon -->    
     <link rel="icon" type="image/x-icon" href="'.GENRouteLink($favicon, $route).'">    
@@ -70,7 +70,7 @@ function HTMLJS($route)
     <script type="text/javascript" src="'.GENRouteLink('vendors/tinymce/tinymce.min.js', $route).'"></script>
     
     <!-- Alain Kelleter JS -->
-    <script src="'.GENRouteLink('assets/theme/akstudio/js/alainkelleter.be.js', $route).'"></script>
+    <script src="'.GENRouteLink('assets/theme/'.THEME.'/js/kt-mini.js', $route).'"></script>
     ';
 
     return $html;
@@ -90,7 +90,7 @@ function HTMLListArticlesWithArray($array)
     $titre = null;
     $teaser = null;
     $contenu = null;
-    $minithumb = null;
+    $icon = null;
     $position = null;
 
     $html = '
@@ -118,13 +118,13 @@ function HTMLListArticlesWithArray($array)
             if($col == 'date') $date = convertDateEnToFr($val);        
             if($col == 'title') $titre = $val;        
             if($col == 'teaser') $teaser = $val;        
-            if($col == 'minithumb') $minithumb = $val;        
+            if($col == 'icon') $icon = $val;        
             if($col == 'position') $position = $val;        
         }
         $html .='  
             <tr class="m-3 p-3">                
                 <td>'.$position.'</td>
-                <td><a class="notUnderline" href="'.PATH_PAGE.'article.php?id='.$id.'">'.HTMLMiniThumb($minithumb,$_SESSION['route']).'</a></td>
+                <td><a class="notUnderline" href="'.PATH_PAGE.'article.php?id='.$id.'">'.HTMLMiniThumb($icon, $_SESSION['route']).'</a></td>
                 <td>'.$date.'</td>
                 <td><a class="notUnderline" href="'.PATH_PAGE.'article.php?id='.$id.'">'.$titre.'</a></td>
                 <td>'. html_entity_decode($teaser).'</td>
@@ -153,7 +153,7 @@ function HTMLListArticlesWithDiv($array)
     $titre = null;
     $teaser = null;
     $contenu = null;
-    $minithumb = null;
+    $icon = null;
     $position = null;
     
     $html = '';
@@ -167,26 +167,39 @@ function HTMLListArticlesWithDiv($array)
             if($col == 'date') $date = convertDateEnToFr($val);        
             if($col == 'title') $titre = $val;        
             if($col == 'teaser') $teaser = $val;        
-            if($col == 'minithumb') $minithumb = $val;  
+            if($col == 'icon') $icon = $val;  
             if($col == 'slug') $slug = $val;
             if($col == 'published') $published = $val;
             if($col == 'position') $position = $val;        
         }
         
         ($published)? $class_row ='div-article' : $class_row ='div-article-nonpublished';
-        ($published)? $icon ='' : $icon ='<i class="mdi mdi-eye-off-outline" data-bs-toggle="tooltip" data-bs-placement="top" title="non published"></i>';
+        ($published)? $icon_notpublished ='' : $icon_notpublished ='<i class="mdi mdi-eye-off-outline" data-bs-toggle="tooltip" data-bs-placement="top" title="Not published"></i>';
         
         $html .='              
             <div class="container article kt-box-shadow m-2 p-1">  
                 <a class="notUnderline news-card" href="'.PATH_PAGE.'article.php?id='.$id.'">
-                <div class="row '.$class_row.'">                
-                    <div class="col-lg-1 d-flex flex-row"><div class="align-self-center justify-content-center">'.$position.' '.$icon.'</div></div>
-                    <div class="col-lg-2 news-card-ele d-flex flex-row"><div class="align-self-center justify-content-center">'.HTMLMiniThumb($minithumb,$_SESSION['route']).'<div class="fw-light fs-6 news-date">'.$date.'</div></div></div>                                        <div class="col-lg-2 news-card-ele d-flex flex-row"><div class="align-self-center justify-content-center">'.$titre.'</div></div>
-                    <div class="col-lg-7 news-card-ele d-flex flex-row"><div class="align-self-center justify-content-center">'. html_entity_decode($teaser).'</div></div>
-                </div>  
-                </a>
-            </div>            
-        ';          
+                    <div class="row '.$class_row.'">                
+                        <div class="col-lg-1 d-flex flex-row"><div class="align-self-center justify-content-center">'.$position.' '.$icon_notpublished.'</div></div>
+                        <div class="col-lg-2 news-card-ele d-flex flex-row"><div class="align-self-center justify-content-center">'.HTMLMiniThumb($icon,$_SESSION['route']).'<div class="fw-light fs-6 news-date">'.$date.'</div></div></div>                                        <div class="col-lg-2 news-card-ele d-flex flex-row"><div class="align-self-center justify-content-center">'.$titre.'</div></div>
+                        <div class="col-lg-7 news-card-ele d-flex flex-row"><div class="align-self-center justify-content-center">'. html_entity_decode($teaser).'</div></div>
+                    </div>  
+                </a>';
+        if(isset($_SESSION['IDENTIFY']) && $_SESSION['IDENTIFY'] == 1 )
+        {
+        
+            $html .='
+                <div class="row">
+                    <div class="col-12 d-flex flex-row-reverse">                        
+                        <a href="{url-edit-article}?id='.$id.'" class="align-self-end justify-content-end me-2"><i class="mdi mdi-mini mdi-application-edit-outline menu-item-mini" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"></i></a>
+                    </div>
+                </div>';
+        }
+        
+        $html .='</div>';
+        
+        
+              
     }
     
     return $html;
@@ -195,10 +208,10 @@ function HTMLListArticlesWithDiv($array)
 /**
  * Retourne le code HTML d'affiche d'une mini thumb
  */
-function HTMLMiniThumb($minithumb, $route, $class = null)
+function HTMLMiniThumb($icon, $route, $class = null)
 {
     $html = '';
-    $html .= '<img class="'.$class.'" src="'.GENRouteLink(PATH_ICON.$minithumb, $route).'">';
+    $html .= '<img class="'.$class.'" src="'.GENRouteLink(PATH_ICON.$icon, $route).'">';
     return $html;
 }
 
@@ -215,19 +228,19 @@ function HTMLincludeNavbar()
 }
 
 /**
- * Retourne le code HTML d'un article
+ * Retourne le code HTML du contenu article
  * 
  * @param array $article
  * @return string
  */
-function HTMLArticle($article)
+function HTMLContentArticle($article)
 {
     $classminithumb = 'img-thumbnail rounded float-start m-2';
     $html = '';
 
     $html = '
         <div id="art-minithumb">
-            '.HTMLMiniThumb($article['minithumb'], $_SESSION['route'], $classminithumb).'        
+            '.HTMLMiniThumb($article['icon'], $_SESSION['route'], $classminithumb).'        
             '.html_entity_decode($article['article']).'
         </div>
     ';
@@ -266,7 +279,7 @@ function HTMLMenuUser()
     $html = '';
 
     if(isset($_SESSION['IDENTIFY']) && $_SESSION['IDENTIFY'] == 0 )
-        $html = '<ul class="navbar-nav d-flex"><li class=""><a href="{url-signin}">Hello You</a></li></ul>';
+        $html = '<ul class="navbar-nav d-flex"><li class=""><a href="{url-signin}" class="colorlink">Hello You</a></li></ul>';
     else{
         if(!isset($_SESSION['firstname'])) $_SESSION['firstname']  = 'John Doe';
         
@@ -288,63 +301,6 @@ function HTMLMenuUser()
     }
 
     return $html;
-}
-
-/**
-* Retourne une div formatée en fonction des données reçues
-* La variable innerSpan permet d'inclure une balise de type span qui
-* permet d'afficher un message secondaire
-*
-* @param string $type  (ALERT, SUCCESS, WARNING)
-* @param string $classes
-* @param string $message
-* @param string $role
-* @param string $id
-* @param string $innerSpan
-*/
-function AKMakeDiv( $type, $classes, $message, $role = null, $id = null, $innerSpan = null )
-{
-    Switch($type)
-    {
-        case 'danger':
-            $div = '<div class="';           
-            $div .= $classes.' text-center"';
-            $div .= 'id="'.$id.'" ';
-            $div .= ' role="'.$role.'">';
-            $div .= $message;
-            if(isset($innerSpan)) $div .= '<span id="submsg">'.$innerSpan.'</span>';
-            $div .= '</div>';
-
-        case 'success':
-            $div = '<div class="';
-            $div .= $classes.' text-center"';
-            $div .= 'id="'.$id.'" ';
-            $div .= ' role="'.$role.'">';
-            $div .= $message;
-            if(isset($innerSpan)) $div .= '<span id="submsg">'.$innerSpan.'</span>';
-            $div .= '</div>';
-
-        case 'warning':
-            $div = '<div class="';
-            $div .= $classes.' text-center"';
-            $div .= 'id="'.$id.'" ';
-            $div .= ' role="'.$role.'">';
-            $div .= $message;
-            if(isset($innerSpan)) $div .= '<span id="submsg">'.$innerSpan.'</span>';
-            $div .= '</div>';
-            
-        case 'info':
-            $div = '<div class="';
-            $div .= $classes.' text-center"';
-            $div .= 'id="'.$id.'" ';
-            $div .= ' role="'.$role.'">';
-            $div .= $message;
-            if(isset($innerSpan)) $div .= '<span id="submsg">'.$innerSpan.'</span>';
-            $div .= '</div>';
-    }
-
-
-    return $div;
 }
 
 /**
@@ -381,7 +337,8 @@ function HTMLArticleFiles($jointFiles)
 * @param string $pathfile
 * @param string $link
 */
-function HTMLFileRow($filename){
+function HTMLFileRow($filename)
+{
 
     $size = @filesize(ABSPATH . PATH_FILE . $filename);
     $sizeConverted = fileSizeConvert($size);
@@ -392,13 +349,13 @@ function HTMLFileRow($filename){
     <div class="files-container m-1">
         <div class="row">
             <div class="col-md-2">
-                <button type="button" class="btn btn-secondary col-xs-12 col-sm-12 files-infos" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-title="Filename" data-bs-content="'.$filename.'">Filename <i class="mdi mdi-file-outline"></i></button> 
+                <button type="button" class="btn btn-secondary col-xs-12 col-sm-12 files-infos" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-title="Filename" data-bs-content="'.$filename.'">Filename</button> 
             </div>
             <div class="col-md-5">
                 <span class="files-infos col-xs-12 col-sm-12">{trm-taille}: '.$sizeConverted.'</span>
             </div>
             <div class="col-md-5">
-                <a href="'.GENRouteLink(PATH_FILE . $filename, $_SESSION['route']).'" class="btn btn-default btn-down btn-sm col-xs-12 col-sm-12">{trm-telecharger}</a>
+                <a href="'.GENRouteLink(PATH_FILE . $filename, $_SESSION['route']).'" class="btn btn-default btn-down btn-sm col-xs-12 col-sm-12 files-info">{trm-telecharger}</a>
             </div>
         </div>
     </div>
@@ -409,7 +366,7 @@ function HTMLFileRow($filename){
 
 /**
 * Retourne le code html des boutons radios indiquant 
-* le status de publication du contenu
+* le status de publication
 * 
 * @return $html 
 */
@@ -429,48 +386,30 @@ function HTMLAddBtnRadioPublished()
 
 /**
 * Retourne le code html des boutons radios indiquant 
-* le status de publication de la page
+* le status de publication dans le form d'édition
 * 
-* @param int $id
+* @param type $published
+* @return string
 */
-function _HTMLRadioBtnPublished($id) {
-
-    $con = new Model('contgen');
-    $radioBtnCtrl = $con->db->prepare("
-        SELECT
-        published
-        FROM
-        content
-        WHERE
-        id = :id
-    ");
-    $radioBtnCtrl->bindParam(':id', $id, PDO::PARAM_INT);
-    $radioBtnCtrl->execute();
-    $radioBtnCtrl = $radioBtnCtrl->fetch(PDO::FETCH_ASSOC);
+function HTMLEditBtnRadioPublished($published)
+{
 
     $html = '';
 
-    if($radioBtnCtrl['published']){
+    if($published){        
         $html .= '
-        <label class="radio-inline">
-        <input type="radio" class="access_publique" name="page_privee" id="page_privee" value="0"> <span class="">{trm-public}</span>
-        </label>
-        <label class="radio-inline">
-        <input type="radio" class="access_prive" name="page_privee" id="page_privee" value="1" checked> <span class="">{trm-privee}</span>
-        <input type="text" class="prive_passwd" id="prive_passwd" name="prive_passwd" placeholder="{trm-mot-de-passe}" value="{value-prive-passwd}">
-        </label>
-
-        ';    
+        <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" id="published_article" name="published_article" checked>
+            <label class="form-check-label" for="published_article">Article published</label>
+        </div>
+        ';
     }else{
         $html .= '
-        <label class="radio-inline">
-        <input type="radio" class="access_publique" name="page_privee" id="page_privee" value="0" checked> <span class="">{trm-public}</span>
-        </label>
-        <label class="radio-inline">
-        <input type="radio" class="access_prive" name="page_privee" id="page_privee" value="1"> <span class="">{trm-privee}</span>
-        <input type="text" class="prive_passwd" id="prive_passwd" name="prive_passwd" placeholder="{trm-mot-de-passe}" value="{value-prive-passwd}">
-        </label>
-        ';             
+        <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" id="published_article" name="published_article">
+            <label class="form-check-label" for="published_article">Article published</label>
+        </div>
+        ';
     }
 
     return $html; 
@@ -518,6 +457,7 @@ function HTMLMenuEditArticle()
     $html .='
         <div class="mb-2 text-end marginHRMenu">
             <a href="{url-index}"><i class="mdi mdi-home-outline menu-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Homepage"></i></a>            
+            <a href="{url-add-article}"><i class="mdi mdi-newspaper-plus menu-item-manage" data-bs-toggle="tooltip" data-bs-placement="top" title="Add Article"></i></a>
             <a href="{url-signout}"><i class="mdi mdi-application-export menu-item-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Sign Out"></i></a>
         </div>
         ';        
@@ -551,5 +491,74 @@ function HTMLMenuGeneralPage()
         ';
     }
         
+    return $html;
+}
+
+/**
+ * Retourne le code HTML de la liste des Icônes
+ * 
+ * @return string
+ */
+function HTMLAddSelectIcon()
+{
+    $html = '';
+    $icons = null;
+    
+    $icons = loadAllIcons();
+    //DEBUG// AKPrintR($icons);    
+    
+    if(is_array($icons) && !empty($icons))
+    {
+        $html .='
+            <label for="minithumb-article" class="form-label">Icon</label>
+            <select class="form-select" id="icon_article" name="icon_article">                        
+        ';
+        
+        foreach($icons as $icon)
+        {
+            $html .='<option value="'.$icon['filename'].'" >'.$icon['icon'].'</option>';
+        }                
+        
+        $html .='</select>';
+    }else
+        $html .='<span class="sig-error">Loading of the icon list failed</span>';
+   
+      
+    return $html;
+}
+
+/**
+ * Retourne le code HTML de la liste des Icônes dans le form d'édition
+ * 
+ * @return string
+ */
+function HTMLEditSelectIcon($icon_selected)
+{
+    $html = '';
+    $icons = null;
+    
+    $icons = loadAllIcons();
+    //DEBUG// AKPrintR($icons);    
+    
+    if(is_array($icons) && !empty($icons))
+    {
+        $html .='
+            <label for="minithumb-article" class="form-label">Icon</label>
+            <select class="form-select" id="icon_article" name="icon_article">                        
+        ';
+        
+        foreach($icons as $icon)
+        {
+            if($icon['filename'] == $icon_selected)
+                $html .='<option value="'.$icon['filename'].'" selected>'.$icon['icon'].'</option>';
+            else
+                $html .='<option value="'.$icon['filename'].'" >'.$icon['icon'].'</option>';
+        }                
+        
+        $html .='</select>';
+    }else
+        $html .='<span class="sig-error">Loading of the icon list failed</span>';
+   
+      
     return $html;
 }

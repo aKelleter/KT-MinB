@@ -6,64 +6,59 @@
   <body>
     {HTMLNavbar}  
     <div class="">
-      <div class="row">
-        <div class="col-1"></div>
-        <div class="col-10">
-          <div id="article" class="container mt-5">
-              <h4>{titre-page-edit-article}</h4>
-            <hr class="noMargin">
-            {menu-edit-article}
-            {message}
-            <div class="container">
-                <form action="" method="post" enctype="multipart/form-data">
-                  <div class="mb-3 form-group">
-                    <label for="title-article" class="form-label">Title</label>
-                    <input type="text" class="form-control" id="title_article" name="title_article" value="{data-title}">                    
-                  </div>
-                  <div class="mb-3 form-group">                    
-                    {radiobtn-status}
-                  </div>  
-                  <div class="mb-3 form-group">
-                      <label for="minithumb-article" class="form-label">Icon</label>
-                      <select class="form-select" id="minithumb_article" name="minithumb_article">                        
-                        <option value="start.png">Start</option> 
-                        <option value="photo.png">Photo</option>
-                      </select>
-                  </div>    
-                  <div class="mb-3 form-group">
-                    <label for="teaser-article" class="form-label">Teaser</label>
-                    <textarea class="form-control" id="teaser_article" name="teaser_article" maxlength="190" rows="3">{data-teaser}</textarea>
-                    <span class="min-ele"><i>190 characters max</i></span>
-                  </div>
-                  <div class="mb-3 form-group">
-                    <label for="content-article" class="form-label">Article</label>
-                    <textarea class="form-control editor" id="content_article" name="content_article" rows="5">{data-article}</textarea>
-                  </div>
-                  <div id="group-attachment" class="form-group">
-                      <label for="file_article1" class="form-label">Joint file</label>
-                      <div id="deleteAttach1">
-                          <div class="input-group mb-3">                    
-                            <input class="form-control" type="file" id="file_article1" name="file_article1">
-                            <span class="input-group-text"><a class="notUnderline" href="javascript:deleteAttachment(1)" onclick="return confirm('Are you really want to delete?')"><i class="mdi mdi-trash-can-outline vBot"></i></a></span>
-                          </div>
-                      </div>    
-                      <div class="mb-3" id="more-upload"></div >  
-                      <div class="clear"></div>
-                      <div class="mb-3" id="more-upload-link">
-                        <a class="notUnderline" href="javascript:void(0);" id="attachMore"><i class="mdi mdi-plus-circle-outline vBot"></i> Attach another file</a>
-                      </div>  
-                  </div>    
-                  <input type="hidden" id="form_name" name="form_name" value="edit-article">  
-                  <button type="submit" class="btn btn-primary mt-5 mb-5">Update</button>
-                </form>
-            </div> 
-          </div>
-          <div id="footer" class="container">
-            {HTMLFooter}
-          </div>  
+        <div class="row">
+            <div class="col-1"></div>
+            <div class="col-10">
+                <div id="article" class="container mt-5">
+                    <h4>{titre-page-edit-article} : <a href="{url-view-article}" target="_blank" class="colorlink" data-bs-toggle="tooltip" data-bs-placement="top" title="Display in a new tab"> <i>{data-title}</i></a></h4>
+                    <hr class="noMargin">
+                    {menu-edit-article}
+                    {message}
+                    <div class="container">
+                        <form action="" method="post" enctype="multipart/form-data">
+                            <div class="mb-3 form-group">
+                                <label for="title-article" class="form-label">Title</label>
+                                <input type="text" class="form-control" id="title_article" name="title_article" value="{data-title}">                    
+                            </div>
+                            <div class="row">
+                                <div class="col-6"><div class="mb-3 form-group">{select-icon-edit}</div></div>                            
+                                <div class="col-6"><div class="mb-3 form-group">{radiobtn-published-edit}</div></div>                           
+                            </div>                           
+                            <div class="mb-3 form-group">
+                              <label for="teaser-article" class="form-label">Teaser</label>
+                              <textarea class="form-control" id="teaser_article" name="teaser_article" maxlength="190" rows="3">{data-teaser}</textarea>
+                              <span class="min-ele"><i>190 characters max</i></span>
+                            </div>
+                            <div class="mb-3 form-group">
+                              <label for="content-article" class="form-label">Article</label>
+                              <textarea class="form-control editor" id="content_article" name="content_article" rows="5">{data-article}</textarea>
+                            </div>
+                            <div id="group-attachment" class="form-group">
+                                <label for="file_article1" class="form-label">Joint file</label>
+                                <div id="deleteAttach1">
+                                    <div class="input-group mb-3">                    
+                                      <input class="form-control" type="file" id="file_article1" name="file_article1">
+                                      <span class="input-group-text"><a class="notUnderline colorlink" href="javascript:deleteAttachment(1)" onclick="return confirm('Are you really want to delete?')"><i class="mdi mdi-trash-can-outline vBot"></i></a></span>
+                                    </div>
+                                </div>    
+                                <div class="mb-3" id="more-upload"></div >  
+                                <div class="clear"></div>
+                                <div class="mb-3" id="more-upload-link">
+                                  <a class="notUnderline colorlink" href="javascript:void(0);" id="attachMore"><i class="mdi mdi-plus-circle-outline vBot"></i> Attach another file</a>
+                                </div>  
+                            </div>    
+                            <input type="hidden" id="form_name" name="form_name" value="edit-article">  
+                            <input type="hidden" id="id_article" name="id_article" value="{data-id}">  
+                            <div class="text-end"><button type="submit" class="btn btn-primary mt-3 mb-5">Update</button></div>
+                          </form>
+                      </div> 
+                </div>
+                <div id="footer" class="container">
+                  {HTMLFooter}
+                </div>  
+            </div>
+            <div class="col-1"></div>
         </div>
-        <div class="col-1"></div>
-      </div>
     </div>    
     {HTMLJS}
   </body>

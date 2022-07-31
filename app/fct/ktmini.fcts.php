@@ -9,7 +9,7 @@
 function loadParams()
 {
     $con = new Model('params');
-    $sql = ' SELECT * FROM ' . $con->credentials['prefix'] . $con->table;
+    $sql = ' SELECT * FROM ' . $con->table;
 
     if ($con) {
 
@@ -42,7 +42,7 @@ function loadParams()
 function loadAllArticles()
 {
     $con = new Model('content');
-    $sql = ' SELECT * FROM ' . $con->credentials['prefix'] . $con->table .' ORDER  BY id DESC';
+    $sql = ' SELECT * FROM ' . $con->table .' ORDER  BY id DESC';
 
     if ($con)
     {
@@ -61,7 +61,7 @@ function loadAllArticles()
                 'date' => $data ['date'],
                 'teaser' => $data ['teaser'],
                 'article' => $data ['article'],
-                'minithumb' => $data ['minithumb'],
+                'icon' => $data ['icon'],
                 'slug' => $data ['slug'],
                 'published' => $data ['published'],
                 'position' => $pos
@@ -76,6 +76,39 @@ function loadAllArticles()
 }
 
 /**
+ * Retourne le tableau de toutes les icônes 
+ * 
+ * @return array
+ */
+function loadAllIcons()
+{
+    $con = new Model('icon');
+    $sql = ' SELECT * FROM ' . $con->table .' ORDER BY icon ASC';
+
+    if ($con)
+    {
+        $req = $con->db->query($sql);
+
+        $list = array();
+        $datas = $req->fetchall();
+          
+        foreach ($datas as $data)
+        {
+            $list[] = array(
+                'id' => $data ['id'],
+                'icon' => $data ['icon'],
+                'filename' => $data ['filename']
+            );
+        }
+        
+        return $list;
+
+    }else
+        return false;
+}
+
+
+/**
  * Retourne le tableau des articles publiés uniquement (pour le visiteur)
  * 
  * @return array
@@ -83,7 +116,7 @@ function loadAllArticles()
 function loadPublishedArticles()
 {
     $con = new Model('content');
-    $sql = ' SELECT * FROM ' . $con->credentials['prefix'] . $con->table .' WHERE published = 1 ORDER  BY id DESC';
+    $sql = ' SELECT * FROM ' . $con->table .' WHERE published = 1 ORDER  BY id DESC';
 
     if ($con)
     {
@@ -102,7 +135,7 @@ function loadPublishedArticles()
                 'date' => $data ['date'],
                 'teaser' => $data ['teaser'],
                 'article' => $data ['article'],
-                'minithumb' => $data ['minithumb'],
+                'icon' => $data ['icon'],
                 'slug' => $data ['slug'],
                 'published' => $data ['published'],
                 'position' => $pos
@@ -124,7 +157,7 @@ function loadPublishedArticles()
 function loadArticle($id)
 {
     $con = new Model('content');
-    $sql = 'SELECT * FROM ' . $con->credentials['prefix'] . $con->table . ' WHERE id='.$id;
+    $sql = 'SELECT * FROM ' . $con->table . ' WHERE id='.$id;
 
     if($con)
     {
@@ -143,7 +176,7 @@ function loadArticle($id)
 function loadJointFiles($id)
 {
     $con = new Model('files');
-    $sql = 'SELECT * FROM ' . $con->credentials['prefix'] . $con->table . ' WHERE content_id='.$id;
+    $sql = 'SELECT * FROM ' . $con->table . ' WHERE content_id='.$id;
 
     if($con)
     {
@@ -205,11 +238,11 @@ function _addArticle($datas)
         $con = new Model('content');
         $article = $con->db->prepare("
             INSERT
-            INTO ".$con->credentials['prefix'].$con->table." (
+            INTO ".$con->table." (
             title,
             date,
             teaser,
-            minithumb,
+            icon,
             article,
             slug                    
             ) 
@@ -217,7 +250,7 @@ function _addArticle($datas)
             :title,
             :date,
             :teaser,
-            :minithumb,
+            :icon,
             :article,
             :slug
             )
@@ -227,7 +260,7 @@ function _addArticle($datas)
             "title" => htmlentities($title_article),
             "date"  => date ('Y-m-d'),
             "teaser" => htmlentities(AKFiltre($teaser_article)),
-            "minithumb" => $minithumb_article,
+            "icon" => $icon_article,
             "article" => htmlentities(AKFiltre($content_article)),
             "slug" => AKSlugify($title_article),
         ]);
@@ -275,7 +308,7 @@ function _addArticle($datas)
  */
 function addArticleMulti($datas)
 {
-    $rt = array("status" => false, "msg" => "");
+    $rt = array("status" => false, "type" => "info", "code" => "0000", "msg" => "");
     $flagAddArticleInDB = null;
     $jointFile = $rtAF = $rtUP = $filesList = array();
         
@@ -285,6 +318,8 @@ function addArticleMulti($datas)
     if(empty($title_article) || empty($teaser_article) || empty($content_article))
     {
         $rt['status'] = false;
+        $rt['type'] = 'danger';
+        $rt['code'] = '0001';
         $rt['msg'] = "The title, teaser and article are mandatory";
     }else
         $rt['status'] = true;
@@ -297,11 +332,11 @@ function addArticleMulti($datas)
         $con = new Model('content');
         $article = $con->db->prepare("
             INSERT
-            INTO ".$con->credentials['prefix'].$con->table." (
+            INTO ".$con->table." (
             title,
             date,
             teaser,
-            minithumb,
+            icon,
             article,
             slug,
             published
@@ -310,7 +345,7 @@ function addArticleMulti($datas)
             :title,
             :date,
             :teaser,
-            :minithumb,
+            :icon,
             :article,
             :slug,
             :published
@@ -321,7 +356,7 @@ function addArticleMulti($datas)
             "title" => AKFiltre($title_article),
             "date"  => date ('Y-m-d'),
             "teaser" => nl2br(htmlentities($teaser_article)),
-            "minithumb" => $minithumb_article,
+            "icon" => $icon_article,
             "article" => nl2br(htmlentities($content_article)),
             "slug" => AKSlugify($title_article),
             "published" => (isset($published_article) && $published_article == 'on')? 1 : 0
@@ -442,6 +477,12 @@ function addArticleMulti($datas)
     return $rt;
 }
 
+/**
+ * Ajoute le nomdu fichier DB
+ * @param type $filename
+ * @param type $content_id
+ * @return boolean
+ */
 function addFileInDB($filename, $content_id)
 {
     $rt = false;
@@ -450,7 +491,7 @@ function addFileInDB($filename, $content_id)
     $con = new Model('files');
     $file = $con->db->prepare("
         INSERT
-        INTO ".$con->credentials['prefix'].$con->table." (
+        INTO ".$con->table." (
         filename,
         content_id              
         ) 
@@ -471,5 +512,140 @@ function addFileInDB($filename, $content_id)
         return true;
     else
         return false;      
+}
+
+/**
+ * Mise à jour d'un article
+ * 
+ * @param type $datas
+ * @return string
+ */
+function updateArticle($datas)
+{
+    $rt = array("status" => false, "type" => "info", "code" => "0000", "msg" => "");
+    $flagUpdArticleInDB = null;
+    $jointFile = $rtAF = $rtUP = $filesList = array();
+        
+    extract($datas);
+    
+    // Vérification de la présence des champs obligatoires
+    if(empty($title_article) || empty($teaser_article) || empty($content_article))
+    {
+        $rt['status'] = false;
+        $rt['type'] = 'danger';
+        $rt['code'] = '0001';
+        $rt['msg'] = "The title, teaser and article are mandatory";
+    }else
+        $rt['status'] = true;
+        
+    // Si les champs obligatoires sont présents
+    if($rt['status'])
+    {
+        //DEBUG// AKPrintR($_FILES, 'FILES'); die();
+        
+    
+        // Mise à jour de l'article en DB
+        $con = new Model('content');
+        $article = $con->db->prepare(
+            "UPDATE ".$con->table." ".
+            "SET ".
+            "title = :title, ".
+            "teaser = :teaser, ".
+            "icon = :icon, ".
+            "article = :article, ".
+            "slug = :slug, ".
+            "published = :published ".
+            "WHERE id = :id"    
+        );
+
+        $rt['status'] = $article->execute([
+            "title" => AKFiltre($title_article),            
+            "teaser" => AKFiltre($teaser_article),
+            "icon" => $icon_article,
+            "article" => htmlentities($content_article),
+            "slug" => AKSlugify($title_article),
+            "id" => $id_article,
+            "published" => (isset($published_article) && $published_article == 'on')? 1 : 0
+        ]);
+        
+        $flagUpdArticleInDB = ($rt['status'])? true : false; 
+        
+        // Si ma mise à jour de l'article s'est bien déroulée
+        if($flagUpdArticleInDB === true)
+        {
+            // 1. Upload du ou des fichiers joints
+            foreach($_FILES as $key => $file)
+            {
+                if(!empty($file['name']))
+                {
+                    $index = $key;
+                    $extensionsAuthorized = unserialize(ALLOWEXT);
+                    $ext = substr(strrchr($_FILES[$index]['name'],'.'),1);
+                    $nameFileWithoutExt = AKSlugify(AKDeleteFileExtension($_FILES[$key]['name']));
+                    $nameFile = $nameFileWithoutExt.'-'.GENrands(5).'.'.$ext;
+                    $filesList[$key] = $nameFile; //Utilisé pour la gestion des erreurs
+                    
+                    $rtUP[$key] = AKUploadFile($index, $nameFile, PATHFILE, MAXSIZE, $extensionsAuthorized);
+                    
+                    if($rtUP[$key] === true){                           
+                        $jointFile[$key] = $nameFile;
+                    }else{                        
+                        $jointFile[$key] = $rtUP[$key];                
+                    }
+                    
+                }else
+                    $jointFile[$key] = null;
+            }
+            
+            // 2. Ajoute le ou les fichiers joints en DB
+            foreach($jointFile as $key => $filename)
+            {
+                if((isset($filename) && !empty($filename)) 
+                   && !AKStrContainsStr($filename, 'UFERR') 
+                   && !AKStrContainsStr($filename, 'UFSIZE') 
+                   && !AKStrContainsStr($filename, 'UFEXT')
+                   && !AKStrContainsStr($filename, 'UFUP'))
+                {                    
+                    if(addFileInDB($filename, $id_article))
+                       $rtAF[$key] = true;     
+                    else
+                       $rtAF[$key] = 'AFERR';     
+                }else{                    
+                    $rtAF[$key] = $rtUP[$key];    
+                }
+            }
+            
+            // 3. Analyser la situation pour le retour du message
+            if($flagUpdArticleInDB === true)
+            {                
+                $rt['msg'] = "Update article done";
+                $rt['type'] = "success";
+
+                if(AKAllIsTrue($rtUP) === true && !empty($_FILES['file_article1']['name']))
+                {
+                    $rt['msg'] .= ' and the attachment could be uploaded correctly to the server';
+                    $rt['type'] = 'success';
+                }elseif(!empty($_FILES['file_article1']['name'])){
+                    $rt['msg'] .= ' but one or several the attachment could not be uploaded to the server'.' : <p>'.AKArrayInline($rtUP, 'ERROR', $filesList).'</p>';
+                    $rt['type'] = 'warning';
+                }
+
+            }else{
+                $rt['msg'] = 'The system encountered a problem when creating the article';
+                $rt['type'] = 'danger';
+            }
+
+            if(!AKAllIsTrue($rtAF) && !empty($_FILES['file_article1']['name']))
+            {
+                $rt['msg'] .= '<strong>'.'Some filenames could not be added in DB'.'</strong>';
+            }            
+            
+        }
+        
+        $article->closeCursor();
+        
+    } 
+    
+    return $rt;
 }
 

@@ -12,17 +12,21 @@ if(isset($_POST['form_name']) && $_POST['form_name'] == 'add-article')
     
     if(empty($_FILES)) $_FILES = null;
         
-    //DEBUG//  AKPrintR($_POST);  AKPrintR($_FILES);  die();
+    //DEBUG// AKPrintR($_POST);  AKPrintR($_FILES);  //die();
     
     $rt = addArticleMulti($_POST);
+    
+    //DEBUG// AKPrintR($rt);
     
     // Message de retour
     $msg = AKMakeDiv($rt['type'], 'alert alert-'.$rt['type'].' text-center', $rt['msg'], 'alert', 'message-fade');
     
     // Préparation de la redirection
     $redirection_url = GENRouteLink('index.php', $_SESSION['route']);    
+    
     // Redirection    
-    header("refresh:4; $redirection_url" );    
+    if($rt['code'] != "0001")
+        header("refresh:4; $redirection_url" );    
     
      
     
@@ -43,9 +47,12 @@ else
 // --------------------------------------------------------------------------------------------
 // Var Initialization
 $pageTitle = 'Alain Kelleter - Add Article';
+
 $engine->set_var('titre-page-add-article', 'Add an article');
 $engine->set_var('message', $msg);
+
 $engine->set_var('radiobtn-status', HTMLAddBtnRadioPublished());
+$engine->set_var('select-icon', HTMLAddSelectIcon());
 
 // General menu on page
 $engine->set_var('menu-general', HTMLMenuGeneralPage());

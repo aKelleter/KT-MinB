@@ -16,6 +16,10 @@
     --menu-item-danger: #e74093;
     --menu-item-manage: #3dcd8a;
     --border-info: #388f9c;
+    --alert-success: #d4e5e8;
+    --border-success: #63aa8a;
+    --alert-danger: #f3d7e6;
+    --border-danger: #e74093;
 
 }
 
@@ -100,7 +104,7 @@ body{
     border-radius: 3px;
     font-size: 12px;
     line-height: 1.5;
-    padding: 5px 10px;
+     padding: 5px 10px;
 }
 
 .article{    
@@ -173,6 +177,16 @@ body{
     
 }
 
+.menu-item-mini{
+    color: var(--menu-item);
+    border: 1px solid;
+    border-color: var(--menu-item);
+    border-radius: 3px; 
+    padding: 2px 1px 1px 1px;
+    margin: 0px 1px !important;
+    
+}
+
 .menu-item-danger{
     color: var(--menu-item-danger);
     border: 1px solid;
@@ -203,11 +217,81 @@ body{
     border-color: var(--border-info);
 }
 
+.title-edit{
+    color: var(--menu-item);
+    font-style: oblique;
+}
+
+input:focus, textArea:focus{
+    border-color: var(--menu-item) !important;
+}
+
+.colorlink{
+    color: var(--menu-item) !important;
+    text-decoration: none;
+}
+
+.colorlink:hover{
+    color: var(--font-main) !important;
+    text-decoration: none;
+}
+
+/* -- Overload Booptsrap -- */
+.form-select:focus,
+.form-control:focus,
+input[type=checkbox]:focus
+{   
+  border-color: rgba(64, 192, 231, 0.8);
+  box-shadow: 0 8px 8px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(64, 192, 231, 0.6);
+  outline: 0 none;
+}
+
+.form-check-input:checked {
+  background-color: var(--menu-item) !important;
+  border-color: var(--border-info) !important;
+}
+
+.btn-primary{
+    background-color: var(--menu-item) !important;
+    border-color: var(--border-info) !important;
+}
+
+.btn-primary:hover{
+    background-color: var(--font-main) !important;
+    border-color: var(--border-discret) !important;
+}
+
+.btn-outline-primary{
+    background-color: none !important;
+    border-color: var(--border-info) !important;
+}
+
+btn-outline-primary:hover{
+    background-color: none !important;
+    border-color: var(--border-discret) !important;
+}
+
+.alert-danger{
+    background-color: var(--alert-danger) !important;
+    border-color: var(--border-danger) !important;
+}
+
+.alert-success{
+    background-color: var(--alert-success) !important;
+    border-color: var(--border-success) !important;
+}
+
+
 
 /* -- Material Design Icons -- */
 .mdi::before {
     font-size: 24px;
     line-height: 24px;
+}
+
+.mdi-mini::before {
+    font-size: 16px !important;
+    line-height: 16px !important;
 }
 
 /*

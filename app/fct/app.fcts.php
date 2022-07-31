@@ -679,3 +679,60 @@ function AKArrayInline($array, $type = 'BASIC', $list = null) {
     return $html;
 
 }
+
+/**
+* Retourne le code HTML d'une div de type Message formatée en fonction des données en paramètre
+* La variable innerSpan permet d'inclure une balise de type span qui
+* permet d'afficher un message secondaire
+*
+* @param string $type  (danger, success, warning, info)
+* @param string $classes
+* @param string $message
+* @param string $role
+* @param string $id
+* @param string $innerSpan
+*/
+function AKMakeDiv( $type, $classes, $message, $role = null, $id = null, $innerSpan = null )
+{
+    Switch($type)
+    {
+        case 'danger':
+            $div = '<div class="';           
+            $div .= $classes.' text-center"';
+            $div .= 'id="'.$id.'" ';
+            $div .= ' role="'.$role.'">';
+            $div .= $message;
+            if(isset($innerSpan)) $div .= '<span id="submsg">'.$innerSpan.'</span>';
+            $div .= '</div>';
+
+        case 'success':
+            $div = '<div class="';
+            $div .= $classes.' text-center"';
+            $div .= 'id="'.$id.'" ';
+            $div .= ' role="'.$role.'">';
+            $div .= $message;
+            if(isset($innerSpan)) $div .= '<span id="submsg">'.$innerSpan.'</span>';
+            $div .= '</div>';
+
+        case 'warning':
+            $div = '<div class="';
+            $div .= $classes.' text-center"';
+            $div .= 'id="'.$id.'" ';
+            $div .= ' role="'.$role.'">';
+            $div .= $message;
+            if(isset($innerSpan)) $div .= '<span id="submsg">'.$innerSpan.'</span>';
+            $div .= '</div>';
+            
+        case 'info':
+            $div = '<div class="';
+            $div .= $classes.' text-center"';
+            $div .= 'id="'.$id.'" ';
+            $div .= ' role="'.$role.'">';
+            $div .= $message;
+            if(isset($innerSpan)) $div .= '<span id="submsg">'.$innerSpan.'</span>';
+            $div .= '</div>';
+    }
+
+
+    return $div;
+}
