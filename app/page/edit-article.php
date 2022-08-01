@@ -52,7 +52,7 @@ if(isset($_POST['form_name']) && $_POST['form_name'] == 'edit-article')
     
     if(empty($_FILES)) $_FILES = null;
 
-        //DEBUG// AKPrintR($_POST);  AKPrintR($_FILES);  //die();
+        //DEBUG// AKPrintR($_POST);  AKPrintR($_FILES);  die();
 
         $rt = updateArticle($_POST);
         
@@ -64,7 +64,7 @@ if(isset($_POST['form_name']) && $_POST['form_name'] == 'edit-article')
             // Préparation de la redirection
             $redirection_url = GENRouteLink('app/page/edit-article.php?id='.$_POST['id_article'].'&msg='.$rt['msg'].'&type='.$rt['type'], $_SESSION['route']);    
             // Redirection    
-            //header("refresh:3; $redirection_url" );   
+            //OLD//header("refresh:3; $redirection_url" );   
             header("location: $redirection_url");
         }
 
@@ -102,6 +102,7 @@ if($checkID)
     $engine->set_var('data-title', html_entity_decode($article['title']));
     $engine->set_var('radiobtn-published-edit', HTMLEditBtnRadioPublished($article['published']));
     $engine->set_var('select-icon-edit', HTMLEditSelectIcon($article['icon']));
+    $engine->set_var('HTMLExistingFiles', HTMLExistingFiles($article['id']));
     $engine->set_var('data-teaser', html_entity_decode($article['teaser']));
     $engine->set_var('data-article', html_entity_decode($article['article']));
     $engine->set_var('data-id', $article['id']);

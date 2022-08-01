@@ -1,7 +1,7 @@
 <?php
 
 if(!defined('K_DEBUG')) define('K_DEBUG', true);
-if(!defined('VERSION')) define('VERSION', 'v0.5.7 - 31/07/2022 22:04');
+if(!defined('VERSION')) define('VERSION', 'v0.5.8 - 01/08/2022 16:50');
 if(!defined('FOOTER')) define('FOOTER', 'alainkelleter.be - '.VERSION);
 if(!defined('THEME')) define('THEME', 'akstudio');
 if(!defined('PATH_ICON')) define('PATH_ICON', 'pub' . DS . 'icons' . DS);
@@ -11,8 +11,8 @@ if(!defined('LOGO')) define('LOGO', 'assets' . DS . 'theme' . DS . 'akstudio' . 
 if(!defined('ICO')) define('ICO', 'assets' . DS . 'theme' . DS . 'akstudio' . DS . 'ico' . DS);
 if(!defined('FAVICON')) define('FAVICON', 'assets' . DS . 'theme' . DS . 'akstudio' . DS . 'img' . DS . 'icon-ak.png');
 
-// Définit la durée d'une session (1h par défaut)
-if(!defined('SESSLIFETIME')) define ('SESSLIFETIME', 3600 * 12);
+// Définit la durée d'une session (4h par défaut)
+if(!defined('SESSLIFETIME')) define ('SESSLIFETIME', 3600 * 4);
 
 // Configure le niveau d'erreurs en fonction du mode de debugging
 if(K_DEBUG) error_reporting(E_ALL | E_STRICT); else error_reporting(0);

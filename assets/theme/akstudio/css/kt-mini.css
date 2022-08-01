@@ -83,7 +83,7 @@ body{
 }
 
 .sig-error {
-    color: var(--sig-error);
+    color: var(--sig-error) !important;
 }
 
 .files-container { 

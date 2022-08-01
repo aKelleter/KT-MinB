@@ -562,3 +562,41 @@ function HTMLEditSelectIcon($icon_selected)
       
     return $html;
 }
+
+/**
+ * Retourne le code HTML de la liste de sélection des fichiers existants 
+ * dans le form d'édition
+ * 
+ * @param type $article_id
+ * @return string
+ */
+function HTMLExistingFiles($article_id)
+{   
+    $existingFiles = null;
+    $existingFiles = loadJointFiles($article_id);
+    
+    $html = '';
+
+    if(!empty($existingFiles))
+    {
+        $html .=' <div class="mb-3 form-group">
+                 <label for="teaser-article" class="form-label">Existing files</label>
+                     <div class="form-control">';
+        foreach($existingFiles as $file)
+        {
+            $html .='
+                     <div class="form-check">
+                         <input class="form-check-input" type="checkbox" value="'.$file['id'].'" id="existingfiles_article[]" name="existingfiles_article[]">
+                         <label class="form-check-label" for="existingfiles_article">
+                           '.$file['filename'].' <a href="'.GENRouteLink(PATH_FILE . $file['filename'], $_SESSION['route']).'" target="_blank" class="colorlink"><i class="mdi mdi-mini mdi-eye-outline menu-item-mini" data-bs-toggle="tooltip" data-bs-placement="top" title="View file"></i></a>
+                         </label>
+                     </div>';
+
+        }
+        $html .='    </div>
+                     <span class="min-ele sig-error"><i>Select the files you want to delete</span>    
+                 </div>'; 
+    }
+    
+    return $html;
+}

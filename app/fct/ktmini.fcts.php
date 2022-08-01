@@ -368,21 +368,21 @@ function addArticleMulti($datas)
         if($flagAddArticleInDB)
         {
             // On va chercher l'ID du nouvel article
-            $sql = "SELECT LAST_INSERT_ID() as lastid FROM content";
+            $sql = "SELECT LAST_INSERT_ID() as lastid FROM $con->table";
             $req = $con->db->query($sql);
             $id = $req->fetch(PDO::FETCH_ASSOC);    
             
             
             // Update de la date de mise à jour du contenu du site
             $con = new Model('params');            
-            $sqllu = "SELECT * FROM params WHERE `key`='lastupdate'";
+            $sqllu = "SELECT * FROM $con->table WHERE `key`='lastupdate'";
             $reqlu = $con->db->prepare($sqllu);    
             $reqlu->execute();
             $idlu = $reqlu->fetchAll(PDO::FETCH_ASSOC);
             //DEBUG//AKPrintR($idlu);             
             if(isset($idlu[0]['id']) && !empty($idlu[0]['id']))
             {
-                $sql = "UPDATE params SET value=:date WHERE id=:id";
+                $sql = "UPDATE $con->table SET value=:date WHERE id=:id";
                 $req = $con->db->prepare($sql);
                 $data = [
                 'date' => date("d/m/Y"),                
@@ -433,7 +433,10 @@ function addArticleMulti($datas)
                     else
                        $rtAF[$key] = 'AFERR';     
                 }else{                    
-                    $rtAF[$key] = $rtUP[$key];    
+                    if(isset($rtUP[$key]))
+                        $rtAF[$key] = $rtUP[$key];    
+                    else
+                        $rtAF[$key] = true;    
                 }
             }
         }
@@ -598,6 +601,7 @@ function updateArticle($datas)
             }
             
             // 2. Ajoute le ou les fichiers joints en DB
+            //DEBUG// AKPrintR($rtUP); die();
             foreach($jointFile as $key => $filename)
             {
                 if((isset($filename) && !empty($filename)) 
@@ -610,12 +614,18 @@ function updateArticle($datas)
                        $rtAF[$key] = true;     
                     else
                        $rtAF[$key] = 'AFERR';     
-                }else{                    
-                    $rtAF[$key] = $rtUP[$key];    
+                }else{
+                    if(isset($rtUP[$key]))
+                        $rtAF[$key] = $rtUP[$key];    
+                    else
+                        $rtAF[$key] = true;
                 }
             }
             
-            // 3. Analyser la situation pour le retour du message
+            // 3. Suppression éventuelle des anciens fichiers
+            
+            
+            // 4. Analyser la situation pour le retour du message
             if($flagUpdArticleInDB === true)
             {                
                 $rt['msg'] = "Update article done";
