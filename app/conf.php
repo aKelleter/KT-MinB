@@ -1,7 +1,7 @@
 <?php
 
 if(!defined('K_DEBUG')) define('K_DEBUG', true);
-if(!defined('VERSION')) define('VERSION', 'v0.5.8 - 01/08/2022 16:50');
+if(!defined('VERSION')) define('VERSION', 'v0.5.9 - 10/08/2022 23:10');
 if(!defined('FOOTER')) define('FOOTER', 'alainkelleter.be - '.VERSION);
 if(!defined('THEME')) define('THEME', 'akstudio');
 if(!defined('PATH_ICON')) define('PATH_ICON', 'pub' . DS . 'icons' . DS);
@@ -24,9 +24,6 @@ if(!defined('ALLOWEXT')) define('ALLOWEXT', serialize($allowExtensions));
 // Definit la taille maximum des fichiers téléversés (1mo = 1048576)
 if(!defined('MAXSIZE')) define( 'MAXSIZE', 1048576 * 64);
 
-// Définit le chemin des images des articles
-if(!defined('PATHIMG')) define('PATHIMG', 'pub' . DS . 'img' . DS);
 
-// Définit le chemin des fichiers joints des articles
-if(!defined('PATHFILE')) define('PATHFILE', 'pub' . DS . 'files' . DS);
+
 

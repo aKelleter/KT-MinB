@@ -187,6 +187,25 @@ function loadJointFiles($id)
 }
 
 /**
+ * Retourne les infos du fichier passé en paramètre
+ * 
+ * @param type $id
+ * @return boolean
+ */
+function getJointFile($id)
+{
+    $con = new Model('files');
+    $sql = 'SELECT * FROM ' . $con->table . ' WHERE id='.$id;
+
+    if($con)
+    {
+        $req = $con->db->query($sql);
+        return $req->fetch(PDO::FETCH_ASSOC);
+    }else
+        return false;
+}
+
+/**
  * Ajoute un article avec un seul fichier joint
  * 
  * @param type $datas
@@ -221,7 +240,7 @@ function _addArticle($datas)
             $extensions = unserialize(ALLOWEXT);
             $nameFile = AKSlugify($_FILES['file_article']['name']).'-'.GENrands(5);
 
-            $rtUP = AKUploadFile($index, $nameFile, PATHFILE, MAXSIZE, $extensions);
+            $rtUP = AKUploadFile($index, $nameFile, PATH_FILE, MAXSIZE, $extensions);
 
             if ($rtUP == false){
                 $jointFile = '';
@@ -407,7 +426,7 @@ function addArticleMulti($datas)
                     $nameFile = $nameFileWithoutExt.'-'.GENrands(5).'.'.$ext;
                     $filesList[$key] = $nameFile; //Utilisé pour la gestion des erreurs
                     
-                    $rtUP[$key] = AKUploadFile($index, $nameFile, PATHFILE, MAXSIZE, $extensionsAuthorized);
+                    $rtUP[$key] = AKUploadFile($index, $nameFile, PATH_FILE, MAXSIZE, $extensionsAuthorized);
                     
                     if($rtUP[$key] === true){                           
                         $jointFile[$key] = $nameFile;
@@ -527,7 +546,7 @@ function updateArticle($datas)
 {
     $rt = array("status" => false, "type" => "info", "code" => "0000", "msg" => "");
     $flagUpdArticleInDB = null;
-    $jointFile = $rtAF = $rtUP = $filesList = array();
+    $jointFile = $rtAF = $rtUP = $rtDF = $filesList = array();
         
     extract($datas);
     
@@ -588,7 +607,7 @@ function updateArticle($datas)
                     $nameFile = $nameFileWithoutExt.'-'.GENrands(5).'.'.$ext;
                     $filesList[$key] = $nameFile; //Utilisé pour la gestion des erreurs
                     
-                    $rtUP[$key] = AKUploadFile($index, $nameFile, PATHFILE, MAXSIZE, $extensionsAuthorized);
+                    $rtUP[$key] = AKUploadFile($index, $nameFile, PATH_FILE, MAXSIZE, $extensionsAuthorized);
                     
                     if($rtUP[$key] === true){                           
                         $jointFile[$key] = $nameFile;
@@ -623,7 +642,13 @@ function updateArticle($datas)
             }
             
             // 3. Suppression éventuelle des anciens fichiers
-            
+            if(isset($existingfiles_article) && is_array($existingfiles_article) && !empty($existingfiles_article))
+            {                
+                foreach($existingfiles_article as $id)
+                {
+                  $rtDF[] = procDeleteJointFile($id);  
+                }
+            }
             
             // 4. Analyser la situation pour le retour du message
             if($flagUpdArticleInDB === true)
@@ -648,7 +673,16 @@ function updateArticle($datas)
             if(!AKAllIsTrue($rtAF) && !empty($_FILES['file_article1']['name']))
             {
                 $rt['msg'] .= '<strong>'.'Some filenames could not be added in DB'.'</strong>';
-            }            
+            }
+            
+            // Check la suppression des fichiers
+            if(AKAllIsTrue($rtDF))
+            {
+                $rt['msg'] .= ' - The selected files have been deleted';
+            }
+            
+            
+            
             
         }
         
@@ -658,4 +692,72 @@ function updateArticle($datas)
     
     return $rt;
 }
+
+
+/**
+ * Procédure du suppression du fichier($id) passé en paramètre
+ * 
+ * @param type $id
+ * @return boolean
+ */
+function procDeleteJointFile($id)
+{
+    $file = null;
+    $delDB = null;
+    $delSYS = null;
+    
+    $file = getJointFile($id);
+    //AKPrintR ($file); die();
+    
+    $delDB = deleteJointFileInDB($id);
+    
+    if($delDB)
+       $delSYS = deleteJointFileInSYS(PATH_FILE, $file['filename']);
+    
+    if($delDB && $delSYS)
+        return true;
+    else
+        return false;
+    
+}
+
+/**
+ * Suppression du fichier joint dans la DB
+ * 
+ * @param type $id
+ * @return boolean
+ */
+function deleteJointFileInDB($id)
+{
+    
+    $con = new Model('files');
+    
+    $delete = $con->db->prepare('DELETE FROM ' . $con->table . ' WHERE id = :id');
+    $delete->bindParam(':id', $id, PDO::PARAM_INT); 
+    $proc = $delete->execute();
+    
+    $delete->closeCursor();
+
+    if($proc)
+        return true;
+    else
+        return false;
+    
+}
+
+/**
+ * Suppression du fichier joint dans le système de fichier
+ * 
+ * @param type $path
+ * @param type $filename
+ * @return boolean
+ */
+function deleteJointFileInSYS($path, $filename)
+{
+    if(unlink(ABSPATH.$path.$filename))
+        return true;
+    else
+        return false;
+}
+
 

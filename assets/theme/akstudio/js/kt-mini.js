@@ -49,7 +49,8 @@ $(document).ready(function() {
         $("#message-fade").fadeOut().empty();
         cleanUriQueries();        
     }    
-    setTimeout(fade_out, 3000);
+    setTimeout(fade_out, 4000);
+    
 });
 
 

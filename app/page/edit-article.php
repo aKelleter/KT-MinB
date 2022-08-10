@@ -11,10 +11,11 @@ $article = null;
 $checkID = false;
 $rt = null;
 
-// Affichage de l'article
+// Si on reçoit un message on le fomatte
 if(isset($_GET['msg']) && !empty($_GET['msg']))
     $msg = AKMakeDiv($_GET['type'], 'alert alert-'.$_GET['type'].' text-center border-info', $_GET['msg'], 'alert', 'message-fade');
 
+// Si on reçoit un ID par l'URL on AFFICHE L'ARTICLE
 if(isset($_GET['id']) && !empty($_GET['id']))
 {   
     $checkID = AKcheckGetParam($_GET['id'], 'NUMERIC');
@@ -36,50 +37,45 @@ if(isset($_GET['id']) && !empty($_GET['id']))
         $msg = AKMakeDiv('danger', 'alert alert-danger text-center mt-2', $feedback, 'alert', 'message-fade');
     }
 
+//  Si on ne reçoit pas d'ID par l'url on vérifie que l'on envoi pas le form d'édition
 }else{
-    // Message Oups Houston we have a problem
-    $feedback = "Ouch : The application encountered a problem while loading the article";
-    $msg = AKMakeDiv('info', 'alert alert-info text-center mt-2', $feedback, 'alert', 'message-fade');
     
-    $redirection_url = GENRouteLink('index.php', $_SESSION['route']);    
-    header("refresh:3; $redirection_url" );   
-    
+    // Mise à jour de l'article
+    if(isset($_POST['form_name']) && $_POST['form_name'] == 'edit-article')
+    {
+
+        if(empty($_FILES)) $_FILES = null;
+
+            //DEBUG//  AKPrintR($_POST);  AKPrintR($_FILES);  die();
+
+            $rt = updateArticle($_POST);
+
+            if(is_array($rt))
+            {
+                // Message de retour
+                $msg = AKMakeDiv($rt['type'], 'alert alert-'.$rt['type'].' text-center', $rt['msg'], 'alert', 'message-fade');
+
+                // Préparation de la redirection
+                $redirection_url = GENRouteLink('app/page/edit-article.php?id='.$_POST['id_article'].'&msg='.$rt['msg'].'&type='.$rt['type'], $_SESSION['route']);    
+                // Redirection    
+                //OLD//header("refresh:3; $redirection_url" );   
+                header("location: $redirection_url");
+            }
+
+    }else{
+        // Message Oups Houston we have a problem
+        $feedback = "Ouch : The application encountered a problem while loading the article";
+        $msg = AKMakeDiv('info', 'alert alert-info text-center mt-2', $feedback, 'alert', 'message-fade');
+
+        $redirection_url = GENRouteLink('index.php', $_SESSION['route']);    
+        header("refresh:3; $redirection_url" );  
+    }
 }
-
-// Mise à jour de l'article
-if(isset($_POST['form_name']) && $_POST['form_name'] == 'edit-article')
-{
-    
-    if(empty($_FILES)) $_FILES = null;
-
-        //DEBUG// AKPrintR($_POST);  AKPrintR($_FILES);  die();
-
-        $rt = updateArticle($_POST);
-        
-        if(is_array($rt))
-        {
-            // Message de retour
-            $msg = AKMakeDiv($rt['type'], 'alert alert-'.$rt['type'].' text-center', $rt['msg'], 'alert', 'message-fade');
-
-            // Préparation de la redirection
-            $redirection_url = GENRouteLink('app/page/edit-article.php?id='.$_POST['id_article'].'&msg='.$rt['msg'].'&type='.$rt['type'], $_SESSION['route']);    
-            // Redirection    
-            //OLD//header("refresh:3; $redirection_url" );   
-            header("location: $redirection_url");
-        }
-
-}
-    
-    
-    
-     
-    
-
 
 // --------------------------------------------------------------------------------------------
 // TEMPLATE SECTION
-
 // --------------------------------------------------------------------------------------------
+ 
 // Instanciation du moteur de template
 $page = 'P-EDIT-ARTICLE';
 $engine = new Template(ABSPATH . D_APP . DS . D_VIEW . DS);

@@ -1,6 +1,5 @@
 #EN COURS
 
-- Edit Article : 31/07/2022
-    * Gérer les fichiers qui appartiennent déjà à l'article - Les afficher et permettre de les supprimer
+- Edit Article : 10/08/2022
     * Afficher le slug en-dessous du titre
     
