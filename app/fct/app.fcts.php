@@ -27,7 +27,7 @@ function AKFindParam($array, $key)
 function AKHashPasswd($passwd, $cost) 
 {
 
-    $options = ['cost' => $cos];
+    $options = ['cost' => $cost];
 
     $hashPasswd = password_hash($passwd, PASSWORD_BCRYPT, $options);
 
